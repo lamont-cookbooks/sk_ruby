@@ -3,6 +3,7 @@ action :install do
   ruby_version = new_resource.version
   rubygems_version = new_resource.rubygems
   pkg_version = new_resource.pkg_version || "0.0.1"
+  cache_uri_base = new_resource.cache_uri_base
   gems = new_resource.gems
 
   install_path = "/opt/ruby-#{ruby_version}"
@@ -14,14 +15,21 @@ action :install do
 
   temp_dir= "/tmp/installdir"
 
-  # FIXME: try to download precompiled deb file from S3 to cache
+  if cache_uri_base
+    cache_uri = "#{cache_uri_base}/#{deb_file}"
+    remote_file deb_path do
+      source cache_uri
+      action :create
+      only_if { ! ::File.exists?(deb_path) && system("curl -s -I -L -m 5 --retry 5 --retry-delay 1 #{cache_uri} | head -n 1 | grep 200 >/dev/null 2>&1") }
+    end
+  end
 
   bash "compile ruby #{ruby_version} from sources to deb file" do
     cwd "/tmp"
     code <<-EOH
       rm -rf /tmp/ruby-#{ruby_version}
       wget #{url}
-      tar xvzf ruby-#{ruby_version}.tar.gz && cd ruby-#{ruby_version}
+      tar xzf ruby-#{ruby_version}.tar.gz && cd ruby-#{ruby_version}
       ./configure --prefix=#{install_path}
       make
       mkdir #{temp_dir}
@@ -30,13 +38,13 @@ action :install do
     not_if { ::File.exists?(deb_path) }
   end
 
-  unless rubygems_version.nil?
+  if rubygems_version
     bash "install rubygems #{rubygems_version} into #{ruby_version}" do
       cwd "/tmp"
       code <<-EOH
         rm -rf /tmp/rubygems-#{rubygems_version}
         wget http://production.cf.rubygems.org/rubygems/rubygems-#{rubygems_version}.tgz
-        tar -xvzf rubygems-#{rubygems_version}.tgz && cd rubygems-#{rubygems_version}
+        tar -xzf rubygems-#{rubygems_version}.tgz && cd rubygems-#{rubygems_version}
         #{temp_dir}/#{install_path}/bin/ruby setup.rb --no-format-executable
       EOH
       not_if { ::File.exists?(deb_path) }
