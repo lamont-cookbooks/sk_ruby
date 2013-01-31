@@ -6,11 +6,11 @@ action :install do
   cache_uri_base = new_resource.cache_uri_base
   gems = new_resource.gems
 
-  install_path = "/opt/ruby-#{ruby_version}"
-  url = "ftp://ftp.ruby-lang.org//pub/ruby/1.9/ruby-#{ruby_version}.tar.gz"
+  install_path = new_resource.install_path || "/opt/ruby-#{ruby_version}"
+  url = new_resource.ruby_url || "ftp://ftp.ruby-lang.org//pub/ruby/1.9/ruby-#{ruby_version}.tar.gz"
   arch = ( node[:kernel][:machine] == "x86_64" ) ? "amd64" : "i386"
-
-  deb_file = "ruby-#{ruby_version}-#{pkg_version}_#{arch}.deb"
+  platform = "#{node[:platform]}-#{node[:platform_version]}".gsub(/\./, "_")
+  deb_file = new_resource.deb_file || "ruby-#{ruby_version}-#{pkg_version}_#{platform}_#{arch}.deb"
   deb_path = "#{Chef::Config[:file_cache_path]}/#{deb_file}"
 
   temp_dir= "/tmp/installdir"
