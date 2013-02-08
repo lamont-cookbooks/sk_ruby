@@ -9,7 +9,7 @@ action :install do
   install_path = new_resource.install_path || "/opt/ruby-#{ruby_version}"
   url = new_resource.ruby_url || "ftp://ftp.ruby-lang.org//pub/ruby/1.9/ruby-#{ruby_version}.tar.gz"
   arch = ( node[:kernel][:machine] == "x86_64" ) ? "amd64" : "i386"
-  platform = "#{node[:platform]}-#{node[:platform_version]}".gsub(/\./, "_")
+  platform = "#{node[:platform]}_#{node[:platform_version]}".gsub(/\./, "_")
   deb_file = new_resource.deb_file || "ruby-#{ruby_version}-#{pkg_version}_#{platform}_#{arch}.deb"
   deb_path = "#{Chef::Config[:file_cache_path]}/#{deb_file}"
 
@@ -66,7 +66,7 @@ action :install do
     cwd "/tmp"
     code <<-EOH
       fpm -s dir -t deb -n ruby-#{ruby_version} -v #{pkg_version} -C #{temp_dir} -p ruby-#{ruby_version}-VERSION_ARCH.deb #{install_path.gsub(/^\/*/,"")}
-      mv #{deb_file} #{deb_path}
+      mv ruby-#{ruby_version}-#{pkg_version}_#{arch}.deb  #{deb_path}
       rm -rf #{temp_dir} /tmp/ruby-#{ruby_version} /tmp/ruby-#{ruby_version}.tar.gz
     EOH
     not_if { ::File.exists?(deb_path) }
