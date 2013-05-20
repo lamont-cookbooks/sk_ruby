@@ -28,6 +28,7 @@ action :install do
     cwd "/tmp"
     code <<-EOH
       rm -rf /tmp/ruby-#{ruby_version}
+      rm -f /tmp/ruby-#{ruby_version}.tar.gz
       wget #{url}
       tar xzf ruby-#{ruby_version}.tar.gz && cd ruby-#{ruby_version}
       ./configure --prefix=#{install_path}
@@ -43,6 +44,7 @@ action :install do
       cwd "/tmp"
       code <<-EOH
         rm -rf /tmp/rubygems-#{rubygems_version}
+        rm -f /tmp/rubygems-#{rubygems_version}.tgz
         wget http://production.cf.rubygems.org/rubygems/rubygems-#{rubygems_version}.tgz
         tar -xzf rubygems-#{rubygems_version}.tgz && cd rubygems-#{rubygems_version}
         #{temp_dir}/#{install_path}/bin/ruby setup.rb --no-format-executable
