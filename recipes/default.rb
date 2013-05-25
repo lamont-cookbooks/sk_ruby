@@ -15,3 +15,15 @@ sk_ruby "1.9.3-p327" do
   cache_uri_base "http://s3.scriptkiddie.org/ruby"
 end
 
+sk_ruby "1.9.3-p429" do
+  rubygems "2.0.3"
+  gems [ "bundler", "rake", "fpm" ]
+  cache_uri_base "http://s3.scriptkiddie.org/ruby"
+end
+
+sk_ruby "2.0.0-p195" do
+  rubygems "2.0.3"
+  gems [ "bundler", "rake", "fpm" ]
+  cache_uri_base "http://s3.scriptkiddie.org/ruby"
+end
+
