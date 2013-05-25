@@ -13,7 +13,7 @@ action :install do
   deb_file = new_resource.deb_file || "ruby-#{ruby_version}-#{pkg_version}_#{platform}_#{arch}.deb"
   deb_path = "#{Chef::Config[:file_cache_path]}/#{deb_file}"
 
-  temp_dir= "/tmp/installdir"
+  #temp_dir= "/tmp/installdir"
 
   if cache_uri_base
     cache_uri = "#{cache_uri_base}/#{deb_file}"
@@ -33,8 +33,8 @@ action :install do
       tar xzf ruby-#{ruby_version}.tar.gz && cd ruby-#{ruby_version}
       ./configure --prefix=#{install_path}
       make
-      mkdir #{temp_dir}
-      make install DESTDIR=#{temp_dir}
+      rm -rf #{install_path}
+      make install
     EOH
     not_if { ::File.exists?(deb_path) }
   end
@@ -47,7 +47,7 @@ action :install do
         rm -f /tmp/rubygems-#{rubygems_version}.tgz
         wget http://production.cf.rubygems.org/rubygems/rubygems-#{rubygems_version}.tgz
         tar -xzf rubygems-#{rubygems_version}.tgz && cd rubygems-#{rubygems_version}
-        #{temp_dir}/#{install_path}/bin/ruby setup.rb --no-format-executable
+        #{install_path}/bin/ruby setup.rb --no-format-executable
       EOH
       not_if { ::File.exists?(deb_path) }
     end
@@ -56,7 +56,7 @@ action :install do
       bash "install gem #{gem} into #{ruby_version}" do
         cwd "/tmp"
         code <<-EOH
-          #{temp_dir}/#{install_path}/bin/gem install #{gem} --no-rdoc --no-ri
+          #{install_path}/bin/gem install #{gem} --no-rdoc --no-ri
         EOH
         not_if { ::File.exists?(deb_path) }
       end
@@ -67,9 +67,9 @@ action :install do
   bash "package ruby #{ruby_version} with fpm" do
     cwd "/tmp"
     code <<-EOH
-      fpm -s dir -t deb -n ruby-#{ruby_version} -v #{pkg_version} -C #{temp_dir} -p ruby-#{ruby_version}-VERSION_ARCH.deb #{install_path.gsub(/^\/*/,"")}
+      fpm -s dir -t deb -n ruby-#{ruby_version} -v #{pkg_version} -p ruby-#{ruby_version}-VERSION_ARCH.deb #{install_path}
       mv ruby-#{ruby_version}-#{pkg_version}_#{arch}.deb  #{deb_path}
-      rm -rf #{temp_dir} /tmp/ruby-#{ruby_version} /tmp/ruby-#{ruby_version}.tar.gz
+      rm -rf #{install_path} /tmp/ruby-#{ruby_version} /tmp/ruby-#{ruby_version}.tar.gz
     EOH
     not_if { ::File.exists?(deb_path) }
   end
