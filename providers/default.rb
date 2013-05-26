@@ -1,13 +1,15 @@
 
 action :install do
   ruby_version = new_resource.version
+  # major.minor version for "2.0.0-p195" => "2.0"
+  ruby_major_minor_version = new_resource.version.sub(/\.\d+\-p\d+/,"")
   rubygems_version = new_resource.rubygems
   pkg_version = new_resource.pkg_version || "0.0.1"
   cache_uri_base = new_resource.cache_uri_base
   gems = new_resource.gems
 
   install_path = new_resource.install_path || "/opt/ruby-#{ruby_version}"
-  url = new_resource.ruby_url || "ftp://ftp.ruby-lang.org//pub/ruby/1.9/ruby-#{ruby_version}.tar.gz"
+  url = new_resource.ruby_url || "ftp://ftp.ruby-lang.org//pub/ruby/#{ruby_major_minor_version}/ruby-#{ruby_version}.tar.gz"
   arch = ( node[:kernel][:machine] == "x86_64" ) ? "amd64" : "i386"
   platform = "#{node[:platform]}_#{node[:platform_version]}".gsub(/\./, "_")
   deb_file = new_resource.deb_file || "ruby-#{ruby_version}-#{pkg_version}_#{platform}_#{arch}.deb"
@@ -49,6 +51,7 @@ action :install do
         tar -xzf rubygems-#{rubygems_version}.tgz && cd rubygems-#{rubygems_version}
         #{install_path}/bin/ruby setup.rb --no-format-executable
       EOH
+      environment 'LC_ALL' => 'en_US.utf-8' # rubygems 2.0.3 hack
       not_if { ::File.exists?(deb_path) }
     end
 
@@ -56,7 +59,7 @@ action :install do
       bash "install gem #{gem} into #{ruby_version}" do
         cwd "/tmp"
         code <<-EOH
-          #{install_path}/bin/gem install #{gem} --no-rdoc --no-ri
+          #{install_path}/bin/gem install #{gem} --force --no-rdoc --no-ri
         EOH
         not_if { ::File.exists?(deb_path) }
       end
