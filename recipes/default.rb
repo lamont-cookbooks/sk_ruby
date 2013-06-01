@@ -27,3 +27,5 @@ sk_ruby "2.0.0-p195" do
   cache_uri_base "http://s3.scriptkiddie.org/ruby"
 end
 
+sk_ruby_symlinks "/opt/ruby-1.9.3-p327/bin"
+
