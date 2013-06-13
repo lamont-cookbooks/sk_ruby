@@ -14,6 +14,8 @@ my_gems = [
   "rake",
   "fpm",
   "berkshelf",
+  "pry",
+  "thor",
 ]
 
 sk_ruby "1.9.3-p327" do
