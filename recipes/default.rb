@@ -7,6 +7,8 @@ include_recipe "build-essential"
 
 include_recipe "sk_ruby::ubuntu"
 
+package "curl"
+
 chef_gem "fpm"
 
 my_gems = [
