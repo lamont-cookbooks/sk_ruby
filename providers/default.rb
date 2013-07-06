@@ -23,7 +23,7 @@ action :install do
     remote_file deb_path do
       source cache_uri
       action :create
-      only_if { ! ::File.exists?(deb_path) && system("curl -s -I -L -m 30 --retry 5 --retry-delay 1 #{cache_uri} | head -n 1 | grep 200 >/dev/null 2>&1") }
+      only_if { system("curl -s -I -L -m 30 --retry 5 --retry-delay 1 #{cache_uri} | head -n 1 | grep 200 >/dev/null 2>&1") }
     end
   end
 
