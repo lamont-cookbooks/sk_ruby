@@ -7,7 +7,7 @@
 end
 
 # install packages necessary to build
-%w{ wget build-essential zlib1g-dev libreadline6-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev }.each do |pkg|
+%w{ wget zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev }.each do |pkg|
   package pkg
 end
 
