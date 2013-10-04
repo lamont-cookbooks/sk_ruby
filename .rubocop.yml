@@ -1,10 +1,10 @@
-# Everyone who cares about StringLiterals needs to die in an AIDS fire, Fuck all those pedants
+# People who care about this need to get a life
 StringLiterals:
   Enabled: false
-# 80 character terminal widths were not handed down by God.  Fuck the hell off.
+# People who care about this need to learn to open up wider windows
 LineLength:
   Enabled: false
-# Chef supports ruby 1.8 hash syntax
+# Chef supports/requires ruby 1.8 hash syntax
 HashSyntax:
   Enabled: false
 # I use spaces inside parens/brackets when I feel it increases readability
