@@ -15,17 +15,23 @@ my_gems = %w{
   bundler
   rake
   fpm
-  berkshelf
   pry
+  pry-byebug
+  pry-remote
+  pry-rescue
+  pry-stack_explorer
   thor
   puma
+  unicorn
+  thin
+  webrick
 }
 
 sk_ruby "2.0.0-p247" do
-  rubygems "2.0.3"
+  rubygems "2.1.5"
   gems my_gems
   cache_uri_base "http://s3.scriptkiddie.org/ruby"
-  pkg_version "0.0.2"
+  pkg_version "0.0.3"
 end
 
 sk_ruby_symlinks "/opt/ruby-2.0.0-p247/bin"
