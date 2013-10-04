@@ -17,4 +17,3 @@ action :install do
     end
   end
 end
-

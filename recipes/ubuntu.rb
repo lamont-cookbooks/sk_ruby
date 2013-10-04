@@ -17,4 +17,3 @@ when node['platform_version'].to_f >= 11.10
 else
   package "libreadline5-dev"
 end
-

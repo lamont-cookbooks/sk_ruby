@@ -2,7 +2,7 @@
 action :install do
   ruby_version = new_resource.version
   # major.minor version for "2.0.0-p195" => "2.0"
-  ruby_major_minor_version = new_resource.version.sub(/\.\d+\-p\d+/,"")
+  ruby_major_minor_version = new_resource.version.sub(/\.\d+\-p\d+/, "")
   rubygems_version = new_resource.rubygems
   pkg_version = new_resource.pkg_version || "0.0.1"
   cache_uri_base = new_resource.cache_uri_base
@@ -10,12 +10,10 @@ action :install do
 
   install_path = new_resource.install_path || "/opt/ruby-#{ruby_version}"
   url = new_resource.ruby_url || "ftp://ftp.ruby-lang.org//pub/ruby/#{ruby_major_minor_version}/ruby-#{ruby_version}.tar.gz"
-  arch = ( node[:kernel][:machine] == "x86_64" ) ? "amd64" : "i386"
+  arch = node[:kernel][:machine] == "x86_64" ? "amd64" : "i386"
   platform = "#{node[:platform]}_#{node[:platform_version]}".gsub(/\./, "_")
   deb_file = new_resource.deb_file || "ruby-#{ruby_version}-#{pkg_version}_#{platform}_#{arch}.deb"
   deb_path = "#{Chef::Config[:file_cache_path]}/#{deb_file}"
-
-  #temp_dir= "/tmp/installdir"
 
   if cache_uri_base
     cache_uri = "#{cache_uri_base}/#{deb_file}"
@@ -27,15 +25,15 @@ action :install do
     end
   end
 
-  bash "compile ruby #{ruby_version} from sources to deb file" do
+  bash "compile ruby #{ruby_version} from sources" do
     cwd "/tmp"
     code <<-EOH
       rm -rf /tmp/ruby-#{ruby_version}
       rm -f /tmp/ruby-#{ruby_version}.tar.gz
       wget #{url}
       tar xzf ruby-#{ruby_version}.tar.gz && cd ruby-#{ruby_version}
-      ./configure --prefix=#{install_path}
-      make
+      ./configure --prefix=#{install_path} --disable-install-doc
+      make -j 3
       rm -rf #{install_path}
       make install
     EOH
@@ -60,13 +58,12 @@ action :install do
       bash "install gem #{gem} into #{ruby_version}" do
         cwd "/tmp"
         code <<-EOH
-          #{install_path}/bin/gem install #{gem} --force --no-rdoc --no-ri
+          #{install_path}/bin/gem install #{gem} -V --force --no-rdoc --no-ri
         EOH
         not_if { ::File.exists?(deb_path) }
       end
     end
   end
-
 
   bash "package ruby #{ruby_version} with fpm" do
     cwd "/tmp"
@@ -81,4 +78,3 @@ action :install do
   dpkg_package deb_path
 
 end
-
