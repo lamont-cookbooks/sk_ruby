@@ -7,3 +7,4 @@ version          "0.0.2"
 name             "sk_ruby"
 
 depends "build-essential"
+depends "apt"
