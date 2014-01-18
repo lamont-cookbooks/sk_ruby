@@ -2,7 +2,7 @@
 action :install do
   ruby_version = new_resource.version
   # major.minor version for "2.0.0-p195" => "2.0"
-  ruby_major_minor_version = new_resource.version.sub(/\.\d+\-p\d+/, "")
+  ruby_major_minor_version = new_resource.version.scan(/^(\d+\.\d+)/)
   rubygems_version = new_resource.rubygems
   pkg_version = new_resource.pkg_version || "0.0.1"
   cache_uri_base = new_resource.cache_uri_base
