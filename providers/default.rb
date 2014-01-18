@@ -8,6 +8,11 @@ action :install do
   cache_uri_base = new_resource.cache_uri_base
   gems = new_resource.gems
 
+  aws_access_key_id = new_resource.aws_access_key_id
+  aws_secret_access_key = new_resource.aws_secret_access_key
+  aws_bucket = new_resource.aws_bucket
+  aws_path = new_resource.aws_path
+
   install_path = new_resource.install_path || "/opt/ruby-#{ruby_version}"
   url = new_resource.ruby_url || "ftp://ftp.ruby-lang.org//pub/ruby/#{ruby_major_minor_version}/ruby-#{ruby_version}.tar.gz"
   arch = node[:kernel][:machine] == "x86_64" ? "amd64" : "i386"
@@ -15,6 +20,7 @@ action :install do
   deb_file = new_resource.deb_file || "ruby-#{ruby_version}-#{pkg_version}_#{platform}_#{arch}.deb"
   deb_path = "#{Chef::Config[:file_cache_path]}/#{deb_file}"
 
+  # FIXME: if we have aws_* attributes then we should s3_file download using those creds
   if cache_uri_base
     cache_uri = "#{cache_uri_base}/#{deb_file}"
     Chef::Log.debug("sk_ruby cache_uri: #{cache_uri}")
@@ -73,6 +79,22 @@ action :install do
       rm -rf #{install_path} /tmp/ruby-#{ruby_version} /tmp/ruby-#{ruby_version}.tar.gz
     EOH
     not_if { ::File.exists?(deb_path) }
+    notifies :run, "ruby_block[uploading #{ruby_version} to S3]", :immediately
+  end
+
+  if aws_access_key_id && aws_secret_access_key && aws_bucket && aws_path
+    ruby_block "uploading #{ruby_version} to S3" do
+      cwd "/tmp"
+      code <<-EOH
+      require 'aws-sdk'
+      s3 = AWS::S3.new(:access_key_id => aws_access_key_id, :secret_access_key => aws_secret_access_key)
+      s3.client
+      bucket = s3.buckets[ aws_bucket ]
+      object = bucket.objects[ "#{aws_path}/#{deb_file}" ]
+      object.write(Pathname.new(deb_path))
+      EOH
+      action :nothing
+    end
   end
 
   dpkg_package deb_path
