@@ -84,14 +84,14 @@ action :install do
 
   if aws_access_key_id && aws_secret_access_key && aws_bucket && aws_path
     ruby_block "uploading #{ruby_version} to S3" do
-      code <<-EOH
-      require 'aws-sdk'
-      s3 = AWS::S3.new(:access_key_id => aws_access_key_id, :secret_access_key => aws_secret_access_key)
-      s3.client
-      bucket = s3.buckets[ aws_bucket ]
-      object = bucket.objects[ "#{aws_path}/#{deb_file}" ]
-      object.write(Pathname.new(deb_path))
-      EOH
+      block do
+        require 'aws-sdk'
+        s3 = AWS::S3.new(:access_key_id => aws_access_key_id, :secret_access_key => aws_secret_access_key)
+        s3.client
+        bucket = s3.buckets[ aws_bucket ]
+        object = bucket.objects[ "#{aws_path}/#{deb_file}" ]
+        object.write(Pathname.new(deb_path))
+      end
       action :nothing
     end
   end
