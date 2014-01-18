@@ -1,8 +1,8 @@
 maintainer       "Lamont Granquist"
 maintainer_email "lamont@scriptkiddie.org"
 license          "Apache 2.0"
-description      "SCRIPTKIDDIES DONT USE DESCRIPTIONS"
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+description      "LWRPs for install source-built rubies"
+long_description "LWRPs for install source-built rubies"
 version          "0.0.15"
 name             "sk_ruby"
 
