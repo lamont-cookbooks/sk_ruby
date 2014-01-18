@@ -32,7 +32,8 @@ This resource source compiles ruby and uses s3 as a cache for the deb/rpm artifa
 #### Example
 
 This will compile ruby-2.1.0 with rubygems 2.2.1 and the listed gems pre-installed.  It will use the "mybucket" s3 bucket to
-store and retrieve the compiled rubygems package.  The resultant package will install in /opt/ruby-2.1.0/bin/ruby.
+store and retrieve the compiled rubygems package.  The resultant package will install in /opt/ruby-2.1.0/bin/ruby.  I've pulled
+the AWS creds out of an encrypted data bag as a best-practices example.
 
 ``` ruby
 my_gems = %w{ bundler rake fpm pry thor puma unicorn thin webrick }
@@ -107,6 +108,11 @@ None
 ## Usage
 
 Put 'depends sk_ruby' in your metadata.rb to gain access to the LWRPs in your code.
+
+## Similar Cookbook
+
+- https://github.com/danielsdeleo/omnibus-rubies
+- https://github.com/fnichol/chef-ruby_build
 
 ## License and Author
 
