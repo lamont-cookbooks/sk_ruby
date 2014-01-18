@@ -27,11 +27,11 @@ my_gems = %w{
   webrick
 }
 
-sk_ruby "2.0.0-p353" do
-  rubygems "2.1.7"
+sk_ruby "2.1.0" do
+  rubygems "2.2.1"
   gems my_gems
   cache_uri_base "http://s3.scriptkiddie.org/ruby"
   pkg_version "0.0.1"
 end
 
-sk_ruby_symlinks "/opt/ruby-2.0.0-p353/bin"
+sk_ruby_symlinks "/opt/ruby-2.1.0/bin"
