@@ -1,8 +1,8 @@
 maintainer       "Lamont Granquist"
 maintainer_email "lamont@scriptkiddie.org"
 license          "Apache 2.0"
-description      "LWRPs for install source-built rubies"
-long_description "LWRPs for install source-built rubies"
+description      "LWRPs for installing source-built rubies"
+long_description "LWRPs for installing source-built rubies"
 version          "1.0.1"
 name             "sk_ruby"
 
