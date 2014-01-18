@@ -1,3 +1,5 @@
+# Chef sk_ruby Cookbook
+
 [![Build Status](https://secure.travis-ci.org/lamont-granquist/sk_ruby.png?branch=master)](http://travis-ci.org/lamont-granquist/sk_ruby)
 
 ## Description
