@@ -3,7 +3,7 @@ maintainer_email "lamont@scriptkiddie.org"
 license          "Apache 2.0"
 description      "LWRPs for install source-built rubies"
 long_description "LWRPs for install source-built rubies"
-version          "0.0.15"
+version          "1.0.0"
 name             "sk_ruby"
 
 depends "build-essential"
