@@ -8,6 +8,11 @@ LWRP to build and install ruby binaries from source into /opt.  Uses fpm to pack
 cached package from a URL instead of source-compiling.  If given s3 credentials, after source compiling it will upload the pacakge to
 s3 to avoid the build step for other servers (and to completely automate the compile-package-upload-to-s3 process).
 
+This does not use rbenv/rvm/chruby.  It just builds a package and install it into /opt.  There is a helper RPM to wire up all the
+binaries into /usr/bin if you want the package to replace the system ruby packages (otherwise you probably want to either be
+specific with the full path to ruby in your shebangs, or else you want to get the /opt installed ruby into the PATH where it 
+needs to be used).
+
 ## Requirements
 
 * Ubuntu 13.04
