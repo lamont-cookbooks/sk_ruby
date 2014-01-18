@@ -19,5 +19,6 @@ Gemfile.lock
 Vagrantfile
 \#*#
 bin/
+metadata.json
 tmp/
 vendor/
