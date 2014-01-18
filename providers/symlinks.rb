@@ -1,11 +1,14 @@
 action :install do
   bin_path = new_resource.bin_path
+  exclude = new_resouce.exclude || []
 
   Dir[ ::File.join(bin_path, "*") ].each do |path|
     file = ::File.basename(path)
-    %w{/usr/local/bin /usr/bin}.each do |sysdir|
-      link ::File.join(sysdir, file) do
-        to path
+    unless exclude.include?(file)
+      %w{/usr/local/bin /usr/bin}.each do |sysdir|
+        link ::File.join(sysdir, file) do
+          to path
+        end
       end
     end
   end
