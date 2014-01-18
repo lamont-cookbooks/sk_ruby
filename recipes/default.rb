@@ -43,7 +43,3 @@ end
 
 sk_ruby_symlinks "/opt/ruby-2.1.0/bin"
 
-attribute :aws_access_key_id, :kind_of => String
-attribute :aws_secret_access_key, :kind_of => String
-attribute :aws_bucket, :kind_of => String
-attribute :aws_path, :kind_of => String
