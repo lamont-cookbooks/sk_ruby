@@ -1,6 +1,6 @@
 action :install do
   bin_path = new_resource.bin_path
-  exclude = new_resouce.exclude || []
+  exclude = new_resource.exclude || []
 
   Dir[ ::File.join(bin_path, "*") ].each do |path|
     file = ::File.basename(path)
