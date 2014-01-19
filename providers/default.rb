@@ -26,7 +26,7 @@ action :install do
     if aws_access_key_id && aws_secret_access_key && aws_bucket && aws_path
       # FIXME: this doesn't really work to keep the deb file private, needs on_failure handlers and needs to avoid using cache_uri at all
       sk_s3_file deb_path do
-        remote_path aws_path
+        remote_path "#{aws_path}/#{deb_file}"
         bucket aws_bucket
         aws_access_key_id aws_access_key_id
         aws_secret_access_key aws_secret_access_key
