@@ -20,16 +20,33 @@ action :install do
   deb_file = new_resource.deb_file || "ruby-#{ruby_version}-#{pkg_version}_#{platform}_#{arch}.deb"
   deb_path = "#{Chef::Config[:file_cache_path]}/#{deb_file}"
 
-  # FIXME: if we have aws_* attributes then we should s3_file download using those creds
   if cache_uri_base
-    cache_uri = "#{cache_uri_base}/#{deb_file}"
-    Chef::Log.debug("sk_ruby cache_uri: #{cache_uri}")
-    remote_file deb_path do
-      source cache_uri
-      action :create
-      only_if { system("curl -s -I -L -m 30 --retry 5 --retry-delay 1 #{cache_uri} | head -n 1 | grep 200 >/dev/null 2>&1") }
+    if aws_access_key_id && aws_secret_access_key && aws_bucket && aws_path
+      # FIXME: this doesn't really work to keep the deb file private, needs on_failure handlers
+      cache_uri = "#{cache_uri_base}/#{deb_file}"
+      sk_s3_file deb_path do
+        remote_path aws_path
+        bucket aws_bucket
+        aws_access_key_id aws_access_key_id
+        aws_secret_access_key aws_secret_access_key
+        owner "root"
+        group "root"
+        mode "0644"
+        action :create
+        only_if { system("curl -s -I -L -m 30 --retry 5 --retry-delay 1 #{cache_uri} | head -n 1 | grep 200 >/dev/null 2>&1") }
+      end
+    else
+      cache_uri = "#{cache_uri_base}/#{deb_file}"
+      Chef::Log.debug("sk_ruby cache_uri: #{cache_uri}")
+      remote_file deb_path do
+        source cache_uri
+        owner "root"
+        group "root"
+        mode "0644"
+        action :create
+        only_if { system("curl -s -I -L -m 30 --retry 5 --retry-delay 1 #{cache_uri} | head -n 1 | grep 200 >/dev/null 2>&1") }
+      end
     end
-  end
 
   bash "compile ruby #{ruby_version} from sources" do
     cwd "/tmp"
