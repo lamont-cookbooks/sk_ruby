@@ -107,6 +107,7 @@ action :install do
         s3.client
         bucket = s3.buckets[ aws_bucket ]
         object = bucket.objects[ "#{aws_path}/#{deb_file}" ]
+        object.acl(:public_read) # FIXME: make into parameter
         object.write(Pathname.new(deb_path))
       end
       action :nothing
