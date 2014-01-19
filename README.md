@@ -17,11 +17,13 @@ needs to be used).
 
 * Ubuntu 13.04
 * Ruby >= 1.9
+* Chef >= 11.6.0 (sk_s3_file dependency)
 
 ## Cookbook Dependencies
 
 * build-essential
 * apt
+* sk_s3_file
 
 ## Resources/Providers
 
