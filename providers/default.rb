@@ -47,6 +47,7 @@ action :install do
         only_if { system("curl -s -I -L -m 30 --retry 5 --retry-delay 1 #{cache_uri} | head -n 1 | grep 200 >/dev/null 2>&1") }
       end
     end
+  end
 
   bash "compile ruby #{ruby_version} from sources" do
     cwd "/tmp"
@@ -59,8 +60,8 @@ action :install do
       make -j 3
       rm -rf #{install_path}
       make install
-    EOH
-    not_if { ::File.exists?(deb_path) }
+      EOH
+      not_if { ::File.exists?(deb_path) }
   end
 
   if rubygems_version
@@ -72,16 +73,16 @@ action :install do
         wget http://production.cf.rubygems.org/rubygems/rubygems-#{rubygems_version}.tgz
         tar -xzf rubygems-#{rubygems_version}.tgz && cd rubygems-#{rubygems_version}
         #{install_path}/bin/ruby setup.rb --no-format-executable
-      EOH
-      environment 'LC_ALL' => 'en_US.utf-8' # rubygems 2.0.3 hack
-      not_if { ::File.exists?(deb_path) }
+        EOH
+        environment 'LC_ALL' => 'en_US.utf-8' # rubygems 2.0.3 hack
+        not_if { ::File.exists?(deb_path) }
     end
 
     gems.each do |gem|
       bash "install gem #{gem} into #{ruby_version}" do
         cwd "/tmp"
         code <<-EOH
-          #{install_path}/bin/gem install #{gem} -V --force --no-rdoc --no-ri
+        #{install_path}/bin/gem install #{gem} -V --force --no-rdoc --no-ri
         EOH
         not_if { ::File.exists?(deb_path) }
       end
@@ -94,9 +95,9 @@ action :install do
       fpm -s dir -t deb -n ruby-#{ruby_version} -v #{pkg_version} -p ruby-#{ruby_version}-VERSION_ARCH.deb #{install_path}
       mv ruby-#{ruby_version}-#{pkg_version}_#{arch}.deb  #{deb_path}
       rm -rf #{install_path} /tmp/ruby-#{ruby_version} /tmp/ruby-#{ruby_version}.tar.gz
-    EOH
-    not_if { ::File.exists?(deb_path) }
-    notifies :run, "ruby_block[uploading #{ruby_version} to S3]", :immediately
+      EOH
+      not_if { ::File.exists?(deb_path) }
+      notifies :run, "ruby_block[uploading #{ruby_version} to S3]", :immediately
   end
 
   if aws_access_key_id && aws_secret_access_key && aws_bucket && aws_path
