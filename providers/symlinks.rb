@@ -1,3 +1,6 @@
+# absolutely will not fix this for Chef 10, do not ask
+use_inline_resources
+
 action :install do
   bin_path = new_resource.bin_path
   exclude = new_resource.exclude || []

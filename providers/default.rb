@@ -1,4 +1,7 @@
 
+# absolutely will not fix this for Chef 10, do not ask
+use_inline_resources
+
 action :install do
   ruby_version = new_resource.version
   # major.minor version for "2.0.0-p195" => "2.0"
