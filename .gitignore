@@ -6,6 +6,7 @@
 *~
 .#*
 .*.sw[a-z]
+.DS_Store
 .bundle/
 .cache/
 .kitchen.local.yml
