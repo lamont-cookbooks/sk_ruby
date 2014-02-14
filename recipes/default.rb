@@ -42,4 +42,3 @@ sk_ruby "2.1.0" do
 end
 
 sk_ruby_symlinks "/opt/ruby-2.1.0/bin"
-

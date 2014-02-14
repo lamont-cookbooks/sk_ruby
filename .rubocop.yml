@@ -4,6 +4,9 @@ StringLiterals:
 # People who care about this need to learn to open up wider windows
 LineLength:
   Enabled: false
+# Method names should be as long as they need to be
+MethodLength:
+  Enabled: false
 # Chef supports/requires ruby 1.8 hash syntax
 HashSyntax:
   Enabled: false
@@ -12,4 +15,3 @@ SpaceInsideParens:
   Enabled: false
 SpaceInsideBrackets:
   Enabled: false
-
