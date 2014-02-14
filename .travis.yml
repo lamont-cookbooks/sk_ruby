@@ -4,6 +4,6 @@ rvm:
 before_script:
   - bundle exec berks install
 script:
-  - bundle exec foodcritic --tags '~FC023' -f any .
+  - bundle exec foodcritic -t '~FC023' -t '~FC019' -f any .
   - bundle exec rspec --color --format progress
   - bundle exec rubocop
