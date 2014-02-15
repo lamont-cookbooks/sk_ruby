@@ -1,9 +1,7 @@
+language: ruby
 rvm:
   - 1.9.3
   - 2.0.0
-before_script:
-  - bundle exec berks install
+  - 2.1.0
 script:
-  - bundle exec foodcritic -t '~FC023' -t '~FC019' -t '~FC048' -f any .
-#  - bundle exec rspec --color --format progress
-  - bundle exec rubocop
+  - bundle exec rake travis

@@ -9,6 +9,7 @@
 .DS_Store
 .bundle/
 .cache/
+.coverage/
 .kitchen.local.yml
 .kitchen/
 .vagrant.d/

@@ -47,7 +47,7 @@ action :install do
       ignore_failure true  # 404s are expected on a first run
     end
   else
-    raise RuntimeError, "must provide cache_uri_base or all aws credentials and location information"
+    raise "must provide cache_uri_base or all aws credentials and location information"
   end
 
   bash "compile ruby #{ruby_version} from sources" do

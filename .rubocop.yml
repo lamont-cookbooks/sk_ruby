@@ -15,3 +15,6 @@ SpaceInsideParens:
   Enabled: false
 SpaceInsideBrackets:
   Enabled: false
+# Nope, not doing this
+SignalException:
+  Enabled: false
