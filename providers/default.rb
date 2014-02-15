@@ -52,7 +52,7 @@ action :install do
 
   bash "compile ruby #{ruby_version} from sources" do
     cwd "/tmp"
-    code <<-EOH
+    code <<-EOF
       rm -rf /tmp/ruby-#{ruby_version}
       rm -f /tmp/ruby-#{ruby_version}.tar.gz
       wget #{url}
@@ -61,30 +61,30 @@ action :install do
       make -j 3
       rm -rf #{install_path}
       make install
-    EOH
+    EOF
     not_if { ::File.exists?(deb_path) }
   end
 
   if rubygems_version
     bash "install rubygems #{rubygems_version} into #{ruby_version}" do
       cwd "/tmp"
-      code <<-EOH
+      code <<-EOF
         rm -rf /tmp/rubygems-#{rubygems_version}
         rm -f /tmp/rubygems-#{rubygems_version}.tgz
         wget http://production.cf.rubygems.org/rubygems/rubygems-#{rubygems_version}.tgz
         tar -xzf rubygems-#{rubygems_version}.tgz && cd rubygems-#{rubygems_version}
         #{install_path}/bin/ruby setup.rb --no-format-executable
-      EOH
-      environment 'LC_ALL' => 'en_US.utf-8' # rubygems 2.0.3 hack
-      not_if { ::File.exists?(deb_path) }
+        EOF
+        environment 'LC_ALL' => 'en_US.utf-8' # rubygems 2.0.3 hack
+        not_if { ::File.exists?(deb_path) }
     end
 
     gems.each do |gem|
       bash "install gem #{gem} into #{ruby_version}" do
         cwd "/tmp"
-        code <<-EOH
+        code <<-EOF
           #{install_path}/bin/gem install #{gem} -V --force --no-rdoc --no-ri
-        EOH
+        EOF
         not_if { ::File.exists?(deb_path) }
       end
     end
@@ -92,16 +92,15 @@ action :install do
 
   bash "package ruby #{ruby_version} with fpm" do
     cwd "/tmp"
-    code <<-EOH
+    code <<-EOF
       fpm -s dir -t deb -n ruby-#{ruby_version} -v #{pkg_version} -p ruby-#{ruby_version}-VERSION_ARCH.deb #{install_path}
       mv ruby-#{ruby_version}-#{pkg_version}_#{arch}.deb  #{deb_path}
       rm -rf #{install_path} /tmp/ruby-#{ruby_version} /tmp/ruby-#{ruby_version}.tar.gz
-    EOH
+    EOF
     not_if { ::File.exists?(deb_path) }
-    notifies :run, "ruby_block[uploading #{ruby_version} to S3]", :immediately
   end
 
-  if aws_access_key_id && aws_secret_access_key && aws_bucket && aws_path
+  if ws_access_key_id && aws_secret_access_key && aws_bucket && aws_path
     ruby_block "uploading #{ruby_version} to S3" do
       block do
         require 'aws-sdk'
@@ -112,6 +111,7 @@ action :install do
         object.acl(:public_read) # FIXME: make into parameter
         object.write(Pathname.new(deb_path))
       end
+      subscribes :run, "ruby_block[package ruby #{ruby_version} with fpm]", :immediately
       action :nothing
     end
   end
