@@ -8,7 +8,7 @@ include_recipe "build-essential"
 case node['platform_family']
 when 'debian'
   include_recipe "sk_ruby::ubuntu"
-when 'rhel'
+when 'rhel', 'fedora'
   include_recipe "sk_ruby::rhel"
 end
 
