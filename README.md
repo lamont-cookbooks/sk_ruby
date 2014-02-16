@@ -2,10 +2,21 @@
 
 [![Build Status](https://secure.travis-ci.org/lamont-granquist/sk_ruby.png?branch=master)](http://travis-ci.org/lamont-granquist/sk_ruby)
 
+## Audience (AKA Why Another Ruby Cookbook?)
+
+- You want to install system-wide rubies
+- You want to get away from rvm/rbenv/chruby magic
+- You just want an RPM/Deb that installs into /opt/ruby-<version>
+- You might need multiple versions of ruby+rubygems on your servers side-by-side
+- You want to automate building those packages and caching them in S3
+- You might want some symlinks into /usr/local/bin as a lightweight alternatives system
+- Your current source installed custom rubies (and/or source-installs via rvm/rbenv) take forever to build
+- You think the Chef Omnibus build system is way too heavy for the job
+
 ## Description
 
 LWRP to build and install ruby binaries from source into /opt.  Uses fpm to package into RPMs or deb files.  Will download a prebuilt
-cached package from a URL instead of source-compiling.  If given s3 credentials, after source compiling it will upload the pacakge to
+cached package from a URL instead of source-compiling.  If given s3 credentials, after source compiling it will upload the package to
 s3 to avoid the build step for other servers (and to completely automate the compile-package-upload-to-s3 process).
 
 This does not use rbenv/rvm/chruby.  It just builds a package and install it into /opt.  There is a helper RPM to wire up all the
@@ -17,7 +28,7 @@ needs to be used).
 
 * Ubuntu 13.04
 * Ruby >= 1.9
-* Chef >= 11.6.0 (sk_s3_file dependency)
+* Chef >= 11.6.0 (via sk_s3_file requirements)
 
 ## Cookbook Dependencies
 
