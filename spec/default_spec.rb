@@ -26,18 +26,40 @@ describe "sk_ruby::default" do
     it 'includes the apt recipe' do
       expect(chef_run).to include_recipe('apt')
     end
+
     %w{ ruby ruby1.8-dev ruby1.9.1 ruby1.9.3 ruby1.9.1-dev libruby1.9.1 libruby-extras libruby1.8-extras rubygems rubygems1.8 }.each do |pkg|
       it "removes package #{pkg}" do
         expect(chef_run).to remove_package(pkg)
       end
     end
+
+    %w{ wget zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev }.each do |pkg|
+      it "installs package #{pkg}" do
+        expect(chef_run).to install_package(pkg)
+      end
+    end
   end
 
-  %w{10.04 12.04 13.04}.each do |version|
+  %w{12.04 13.04}.each do |version|
     context "on ubuntu #{version}" do
       let(:chef_run) { ChefSpec::Runner.new(platform: 'ubuntu', version: version).converge(described_recipe) }
 
-      it_behaves_like "debian-like O/S" do
+      it_behaves_like "debian-like O/S"
+
+      it "installs libreadline6-dev" do
+        expect(chef_run).to install_package("libreadline6-dev")
+      end
+    end
+  end
+
+  %w{10.04}.each do |version|
+    context "on ubuntu #{version}" do
+      let(:chef_run) { ChefSpec::Runner.new(platform: 'ubuntu', version: version).converge(described_recipe) }
+
+      it_behaves_like "debian-like O/S"
+
+      it "installs libreadline6-dev" do
+        expect(chef_run).to install_package("libreadline5-dev")
       end
     end
   end
@@ -46,8 +68,7 @@ describe "sk_ruby::default" do
     context "on debian #{version}" do
       let(:chef_run) { ChefSpec::Runner.new(platform: 'debian', version: version).converge(described_recipe) }
 
-      it_behaves_like "debian-like O/S" do
-      end
+      it_behaves_like "debian-like O/S"
     end
   end
 
@@ -57,6 +78,16 @@ describe "sk_ruby::default" do
 
     it "includes the sk_ruby::rhel recipe" do
       expect(chef_run).to include_recipe('sk_ruby::rhel')
+    end
+
+    it "includes the yum-epel recipe" do
+      expect(chef_run).to include_recipe('yum-epel')
+    end
+
+    %w{ wget zlib-devel openssl-devel libyaml-devel libxml2-devel libxslt-devel readline-devel }.each do |pkg|
+      it "installs package #{pkg}" do
+        expect(chef_run).to install_package(pkg)
+      end
     end
   end
 
