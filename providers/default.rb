@@ -50,6 +50,12 @@ action :install do
     raise "must provide cache_uri_base or all aws credentials and location information"
   end
 
+  # clean up zero-length turds from 404s due to chef bug
+  file deb_path do
+    action :delete
+    only_if { ::File.zero?(deb_path) }
+  end
+
   bash "compile ruby #{ruby_version} from sources" do
     cwd "/tmp"
     code <<-EOF
@@ -74,9 +80,9 @@ action :install do
         wget http://production.cf.rubygems.org/rubygems/rubygems-#{rubygems_version}.tgz
         tar -xzf rubygems-#{rubygems_version}.tgz && cd rubygems-#{rubygems_version}
         #{install_path}/bin/ruby setup.rb --no-format-executable
-        EOF
-        environment 'LC_ALL' => 'en_US.utf-8' # rubygems 2.0.3 hack
-        not_if { ::File.exists?(deb_path) }
+      EOF
+      environment 'LC_ALL' => 'en_US.utf-8' # rubygems 2.0.3 hack
+      not_if { ::File.exists?(deb_path) }
     end
 
     gems.each do |gem|
@@ -100,7 +106,7 @@ action :install do
     not_if { ::File.exists?(deb_path) }
   end
 
-  if ws_access_key_id && aws_secret_access_key && aws_bucket && aws_path
+  if aws_access_key_id && aws_secret_access_key && aws_bucket && aws_path
     ruby_block "uploading #{ruby_version} to S3" do
       block do
         require 'aws-sdk'
