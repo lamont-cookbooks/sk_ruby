@@ -21,3 +21,6 @@ TrailingComma:
 # Prevents multi-line annotated comments, why?
 CommentAnnotation:
   Enabled: false
+# This would be more useful if it would alert only on files that had UTF-8 chars in them
+Encoding:
+  Enabled: false
