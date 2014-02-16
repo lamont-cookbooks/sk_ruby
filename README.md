@@ -24,11 +24,30 @@ binaries into /usr/bin if you want the package to replace the system ruby packag
 specific with the full path to ruby in your shebangs, or else you want to get the /opt installed ruby into the PATH where it 
 needs to be used).
 
+## Supports
+
+* Ubuntu 10.04-13.10
+* RHEL/CentOS/Oracle/Scientific 5.x/6.x
+* Amazon 2012.09
+* Fedora ???
+* Debian ??
+
+## Supported Builds:
+
+Tested:
+
+* Ruby 1.8.7-p374
+* Ruby 1.9.3-p484
+* Ruby 2.0.0-p353
+* Ruby 2.1.0
+
+Other versions should work, nothing before 1.8.7 will be supported.
+
 ## Requirements
 
-* Ubuntu 13.04
-* Ruby >= 1.9
-* Chef >= 11.6.0 (via sk_s3_file requirements)
+* Omnibus Chef >= 11.6.0
+
+DO NOT SUBMIT pull requests for earlier Chef versions, or for non-omnibus Chef support.
 
 ## Cookbook Dependencies
 
@@ -78,7 +97,7 @@ end
 * `cache_uri_base` - The base of the URI to find the cached package at
 * `install_path` - Path to install the ruby to (defaults to `/opt/ruby-<version>`)
 * `ruby_url` - URI to download ruby from (defaults to correct ftp.ruby-lang.org URI)
-* `deb_file` - Name of the package to build/install (defaults to `ruby-<version>-<pkg_version>_<platform>_<platform_version>_<arch>.deb`)
+* `pkg_file` - Name of the package to build/install (defaults to `ruby-<version>-<pkg_version>_<platform>_<platform_version>_<arch>.deb`)
 
 Excluding any of these will avoid publishing to s3, but compile+install will still work:
 
@@ -126,6 +145,13 @@ Put 'depends sk_ruby' in your metadata.rb to gain access to the LWRPs in your co
 
 - https://github.com/danielsdeleo/omnibus-rubies
 - https://github.com/fnichol/chef-ruby_build
+
+## Bugs
+
+- There's an intentional `ignore_failure true` which throws a stack trace with a 404 on the first run when you haven't yet uploaded
+a pacakge to S3 yet.  The stack trace is not a bug.  Needs fixing in Chef.
+
+- Right after the 404 the `remote_file` resource leaves a zero-length turd which we are forced to clean up.  Needs fixing in Chef.
 
 ## License and Author
 

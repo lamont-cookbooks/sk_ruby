@@ -13,9 +13,8 @@ end
   package pkg
 end
 
-case
-when node['platform_version'].to_f >= 11.10
-  package "libreadline6-dev"
-else
+if node['platform'] == 'ubuntu' && node['platform_version'].to_f < 11.10
   package "libreadline5-dev"
+else
+  package "libreadline6-dev"
 end

@@ -7,9 +7,6 @@ LineLength:
 # Method names should be as long as they need to be
 MethodLength:
   Enabled: false
-# Chef supports/requires ruby 1.8 hash syntax
-HashSyntax:
-  Enabled: false
 # I use spaces inside parens/brackets when I feel it increases readability
 SpaceInsideParens:
   Enabled: false
@@ -17,4 +14,10 @@ SpaceInsideBrackets:
   Enabled: false
 # Nope, not doing this
 SignalException:
+  Enabled: false
+# This is just outright ass-backwards
+TrailingComma:
+  EnforcedStyleForMultiline: comma
+# Prevents multi-line annotated comments, why?
+CommentAnnotation:
   Enabled: false

@@ -11,7 +11,7 @@ describe "sk_ruby::default" do
       expect(chef_run).to install_chef_gem('fpm')
     end
 
-    it 'installs the fpm gem' do
+    it 'installs the aws-sdk gem' do
       expect(chef_run).to install_chef_gem('aws-sdk')
     end
   end
@@ -21,6 +21,15 @@ describe "sk_ruby::default" do
 
     it 'includes the sk_ruby::ubuntu recipe' do
       expect(chef_run).to include_recipe('sk_ruby::ubuntu')
+    end
+
+    it 'includes the apt recipe' do
+      expect(chef_run).to include_recipe('apt')
+    end
+    %w{ ruby ruby1.8-dev ruby1.9.1 ruby1.9.3 ruby1.9.1-dev libruby1.9.1 libruby-extras libruby1.8-extras rubygems rubygems1.8 }.each do |pkg|
+      it "removes package #{pkg}" do
+        expect(chef_run).to remove_package(pkg)
+      end
     end
   end
 

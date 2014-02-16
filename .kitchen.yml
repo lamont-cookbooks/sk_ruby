@@ -1,7 +1,12 @@
-driver_plugin: vagrant
-driver_config:
+driver:
+  name: vagrant
+  customize:
+    memory: 1024
+    cpus: 4
+
+provisioner:
+  name: chef_zero
   require_chef_omnibus: true
-provisioner: chef_zero
 
 platforms:
   - name: ubuntu-13.04
@@ -32,3 +37,5 @@ platforms:
 suites:
   - name: default
     run_list: fake::default
+  - name: single
+    run_list: fake::single
