@@ -16,7 +16,6 @@
 .vagrant/
 .zero-knife.rb
 Berksfile.lock
-Gemfile
 Gemfile.lock
 Vagrantfile
 \#*#
