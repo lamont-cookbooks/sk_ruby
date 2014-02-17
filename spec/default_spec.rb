@@ -42,7 +42,7 @@ describe "sk_ruby::default" do
 
   %w{12.04 13.04}.each do |version|
     context "on ubuntu #{version}" do
-      let(:chef_run) { ChefSpec::Runner.new(platform: 'ubuntu', version: version).converge(described_recipe) }
+      cached(:chef_run) { ChefSpec::Runner.new(platform: 'ubuntu', version: version).converge(described_recipe) }
 
       it_behaves_like "debian-like O/S"
 
@@ -54,7 +54,7 @@ describe "sk_ruby::default" do
 
   %w{10.04}.each do |version|
     context "on ubuntu #{version}" do
-      let(:chef_run) { ChefSpec::Runner.new(platform: 'ubuntu', version: version).converge(described_recipe) }
+      cached(:chef_run) { ChefSpec::Runner.new(platform: 'ubuntu', version: version).converge(described_recipe) }
 
       it_behaves_like "debian-like O/S"
 
@@ -66,7 +66,7 @@ describe "sk_ruby::default" do
 
   %w{6.0.5 7.0 7.4}.each do |version|
     context "on debian #{version}" do
-      let(:chef_run) { ChefSpec::Runner.new(platform: 'debian', version: version).converge(described_recipe) }
+      cached(:chef_run) { ChefSpec::Runner.new(platform: 'debian', version: version).converge(described_recipe) }
 
       it_behaves_like "debian-like O/S"
     end
@@ -101,7 +101,7 @@ describe "sk_ruby::default" do
   RHEL_VERSIONS.each_key do |platform|
     RHEL_VERSIONS[platform].each do |version|
       context "on #{platform} #{version}" do
-        let(:chef_run) { ChefSpec::Runner.new(platform: platform, version: version).converge(described_recipe) }
+        cached(:chef_run) { ChefSpec::Runner.new(platform: platform, version: version).converge(described_recipe) }
 
         it_behaves_like "RHEL-like O/S"
       end

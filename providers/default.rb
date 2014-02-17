@@ -9,7 +9,7 @@ def gen_platform_string
   # all the EL clones can share pre-build binaries
   if %w{redhat centos oracle scientific}.include?(platform)
     platform = "el"
-    platform_version = platform_version.match(/^(\d+\.\d+)/)[1]
+    platform_version = platform_version.match(/^(\d+)/)[1]
   end
   # FIXME: amazon and fedora could probably share el binaries
 

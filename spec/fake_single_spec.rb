@@ -2,48 +2,99 @@ require 'spec_helper'
 
 describe "fake::single" do
   context "the sk_ruby provider" do
-    let(:pkg_path) { "/var/chef/cache/ruby-2.1.0-0.0.1_ubuntu_13_04_amd64.deb" }
+    context "on ubuntu 13.04" do
+      let(:pkg_path) { "/var/chef/cache/ruby-2.1.0-0.0.1_ubuntu_13_04_amd64.deb" }
 
-    let(:test_fake_single) do
-      ChefSpec::Runner.new(
-        step_into: 'sk_ruby',
-        platform: 'ubuntu',
-        version: "13.04",
-      ).converge(described_recipe)
+      let(:test_fake_single) do
+        ChefSpec::Runner.new(
+          step_into: 'sk_ruby',
+          platform: 'ubuntu',
+          version: "13.04",
+        ).converge(described_recipe)
+      end
+
+      it "installs ruby 2.1.0" do
+        expect(test_fake_single).to download_sk_ruby("2.1.0")
+        expect(test_fake_single).to install_sk_ruby("2.1.0")
+      end
+
+      context "when remote_file 404 leaves a zero-length turd (Chef Bug)" do
+        before do
+          File.should_receive(:zero?).with(pkg_path).and_return(true)
+        end
+        it "cleans it up" do
+          expect(test_fake_single).to delete_file(pkg_path)
+        end
+      end
+
+      context "when remote_file does not leave a zero-length turd" do
+        before do
+          File.should_receive(:zero?).with(pkg_path).and_return(false)
+        end
+        it "should not clean it up" do
+          expect(test_fake_single).not_to delete_file(pkg_path)
+        end
+      end
+
+      it "does things" do
+        expect(test_fake_single).to create_remote_file(pkg_path)
+        expect(test_fake_single).to run_bash("compile ruby 2.1.0 from sources")
+        expect(test_fake_single).to run_bash("install rubygems 2.2.1 into 2.1.0")
+        expect(test_fake_single).to run_bash("install gem bundler into 2.1.0")
+        expect(test_fake_single).to run_bash("install gem rake into 2.1.0")
+        expect(test_fake_single).to run_bash("install gem pry into 2.1.0")
+        expect(test_fake_single).to run_bash("package ruby 2.1.0 with fpm")
+        expect(test_fake_single).to install_dpkg_package(pkg_path)
+      end
+
     end
 
-    it "installs ruby 2.1.0" do
-      expect(test_fake_single).to download_sk_ruby("2.1.0")
-      expect(test_fake_single).to install_sk_ruby("2.1.0")
-    end
+    context "on centos 6.5" do
 
-    context "when remote_file 404 leaves a zero-length turd (Chef Bug)" do
-      before do
-        File.should_receive(:zero?).with(pkg_path).and_return(true)
-      end
-      it "cleans it up" do
-        expect(test_fake_single).to delete_file(pkg_path)
-      end
-    end
+      let(:pkg_path) { "/var/chef/cache/ruby-2.1.0-0.0.1_el_6_amd64.rpm" }
 
-    context "when remote_file does not leave a zero-length turd" do
-      before do
-        File.should_receive(:zero?).with(pkg_path).and_return(false)
+      let(:test_fake_single) do
+        ChefSpec::Runner.new(
+          step_into: 'sk_ruby',
+          platform: "centos",
+          version: "6.5",
+        ).converge(described_recipe)
       end
-      it "should not clean it up" do
-        expect(test_fake_single).not_to delete_file(pkg_path)
-      end
-    end
 
-    it "does things" do
-      expect(test_fake_single).to create_remote_file("/var/chef/cache/ruby-2.1.0-0.0.1_ubuntu_13_04_amd64.deb")
-      expect(test_fake_single).to run_bash("compile ruby 2.1.0 from sources")
-      expect(test_fake_single).to run_bash("install rubygems 2.2.1 into 2.1.0")
-      expect(test_fake_single).to run_bash("install gem bundler into 2.1.0")
-      expect(test_fake_single).to run_bash("install gem rake into 2.1.0")
-      expect(test_fake_single).to run_bash("install gem pry into 2.1.0")
-      expect(test_fake_single).to run_bash("package ruby 2.1.0 with fpm")
-      expect(test_fake_single).to install_dpkg_package("/var/chef/cache/ruby-2.1.0-0.0.1_ubuntu_13_04_amd64.deb")
+      it "installs ruby 2.1.0" do
+        expect(test_fake_single).to download_sk_ruby("2.1.0")
+        expect(test_fake_single).to install_sk_ruby("2.1.0")
+      end
+
+      context "when remote_file 404 leaves a zero-length turd (Chef Bug)" do
+        before do
+          File.should_receive(:zero?).with(pkg_path).and_return(true)
+        end
+        it "cleans it up" do
+          expect(test_fake_single).to delete_file(pkg_path)
+        end
+      end
+
+      context "when remote_file does not leave a zero-length turd" do
+        before do
+          File.should_receive(:zero?).with(pkg_path).and_return(false)
+        end
+        it "should not clean it up" do
+          expect(test_fake_single).not_to delete_file(pkg_path)
+        end
+      end
+
+      it "does things" do
+        expect(test_fake_single).to create_remote_file(pkg_path)
+        expect(test_fake_single).to run_bash("compile ruby 2.1.0 from sources")
+        expect(test_fake_single).to run_bash("install rubygems 2.2.1 into 2.1.0")
+        expect(test_fake_single).to run_bash("install gem bundler into 2.1.0")
+        expect(test_fake_single).to run_bash("install gem rake into 2.1.0")
+        expect(test_fake_single).to run_bash("install gem pry into 2.1.0")
+        expect(test_fake_single).to run_bash("package ruby 2.1.0 with fpm")
+        expect(test_fake_single).to install_rpm_package(pkg_path)
+      end
+
     end
 
   end
