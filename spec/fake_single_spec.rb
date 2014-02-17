@@ -59,7 +59,7 @@ describe "fake::single" do
 
     let(:bin_path) { "/opt/ruby-2.1.0/bin" }
 
-    let(:binaries) { [ "pry", "rake" ] }
+    let(:binaries) { %w{pry rake} }
 
     before do
       Dir.stub(:[]).and_call_original  # conflict with rspec?
@@ -72,4 +72,3 @@ describe "fake::single" do
 
   end
 end
-
