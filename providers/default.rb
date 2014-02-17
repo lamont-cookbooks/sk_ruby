@@ -2,31 +2,17 @@
 # absolutely will not fix this for Chef 10, do not ask
 use_inline_resources
 
-action :install do
+def get_pkg_file(new_resource)
   ruby_version = new_resource.version
-  # minor version for "2.0.0-p195" => "2.0"
-  ruby_minor_version = new_resource.version[/^(\d+\.\d+)/, 1]
-  rubygems_version = new_resource.rubygems
   pkg_version = new_resource.pkg_version || "0.0.1"
-  cache_uri_base = new_resource.cache_uri_base
-  gems = new_resource.gems
-
-  aws_access_key_id = new_resource.aws_access_key_id
-  aws_secret_access_key = new_resource.aws_secret_access_key
-  aws_bucket = new_resource.aws_bucket
-  aws_path = new_resource.aws_path
-
-  install_path = new_resource.install_path || "/opt/ruby-#{ruby_version}"
-  url = new_resource.ruby_url || "ftp://ftp.ruby-lang.org//pub/ruby/#{ruby_minor_version}/ruby-#{ruby_version}.tar.gz"
 
   # generate a string indicating which platform version we are on
   platform = node[:platform]
   # all the EL clones can share pre-build binaries
   platform = "el" if %w{redhat centos oracle scientific}.include?(platform)
   # FIXME: amazon and fedora could probably share el binaries
-  platform_string = "#{platform}_#{node[:platform_version]}".gsub(/\./, "_")
 
-  # generate the name of the package to build
+  platform_string = "#{platform}_#{node[:platform_version]}".gsub(/\./, "_")
   arch = node[:kernel][:machine] == "x86_64" ? "amd64" : "i386"
   pkg_file = new_resource.pkg_file || "ruby-#{ruby_version}-#{pkg_version}_#{platform_string}_#{arch}"
   case node['platform_family']
@@ -35,8 +21,23 @@ action :install do
   when 'rhel', 'fedora'
     pkg_file << ".rpm"
   end
+  pkg_file
+end
 
-  pkg_path = "#{Chef::Config[:file_cache_path]}/#{pkg_file}"
+def get_pkg_path(pkg_file)
+  "#{Chef::Config[:file_cache_path]}/#{pkg_file}"
+end
+
+action :download do
+  cache_uri_base = new_resource.cache_uri_base
+
+  aws_access_key_id = new_resource.aws_access_key_id
+  aws_secret_access_key = new_resource.aws_secret_access_key
+  aws_bucket = new_resource.aws_bucket
+  aws_path = new_resource.aws_path
+
+  pkg_file = get_pkg_file(new_resource)
+  pkg_path = get_pkg_path(pkg_file)
 
   if aws_access_key_id && aws_secret_access_key && aws_bucket && aws_path
     sk_s3_file pkg_path do
@@ -70,6 +71,27 @@ action :install do
     action :delete
     only_if { ::File.zero?(pkg_path) }
   end
+end
+
+action :install do
+  ruby_version = new_resource.version
+  # minor version for "2.0.0-p195" => "2.0"
+  ruby_minor_version = new_resource.version[/^(\d+\.\d+)/, 1]
+  rubygems_version = new_resource.rubygems
+  pkg_version = new_resource.pkg_version || "0.0.1"
+  cache_uri_base = new_resource.cache_uri_base
+  gems = new_resource.gems
+
+  aws_access_key_id = new_resource.aws_access_key_id
+  aws_secret_access_key = new_resource.aws_secret_access_key
+  aws_bucket = new_resource.aws_bucket
+  aws_path = new_resource.aws_path
+
+  install_path = new_resource.install_path || "/opt/ruby-#{ruby_version}"
+  url = new_resource.ruby_url || "ftp://ftp.ruby-lang.org//pub/ruby/#{ruby_minor_version}/ruby-#{ruby_version}.tar.gz"
+
+  pkg_file = get_pkg_file(new_resource)
+  pkg_path = get_pkg_path(pkg_file)
 
   jobs = 3
   jobs = node['cpu']['total'] + 1 if node['cpu'] && node['cpu']['total']

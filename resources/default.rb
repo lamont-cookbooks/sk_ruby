@@ -1,5 +1,5 @@
-actions :install
-default_action :install
+actions :download, :install
+default_action [ :download, :install ]
 
 attribute :version,        kind_of: String, name_attribute: true
 attribute :rubygems,       kind_of: String

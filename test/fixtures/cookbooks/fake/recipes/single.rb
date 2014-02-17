@@ -12,6 +12,7 @@ sk_ruby "2.1.0" do
   gems my_gems
   cache_uri_base "http://s3.scriptkiddie.org/nonexist"
   pkg_version "0.0.1"
+#  action [ :download, :install ]
 end
 
 sk_ruby_symlinks "/opt/ruby-2.1.0/bin"
