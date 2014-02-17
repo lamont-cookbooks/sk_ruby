@@ -2,13 +2,21 @@
 driver_config:
   digitalocean_client_id: <%= ENV['DIGITAL_OCEAN_CLIENT_ID'] %>
   digitalocean_api_key: <%= ENV['DIGITAL_OCEAN_API_KEY'] %>
-  sudo: false
 
 provisioner:
   name: chef_zero
   require_chef_omnibus: latest
 
 platforms:
+- name: debian-60
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 12573
+    flavor_id: 63
+    region_id: 4
+    sudo: false
+  run_list: fake::single
+
 - name: ubuntu-1004
   driver_plugin: digitalocean
   driver_config:
@@ -37,14 +45,6 @@ platforms:
   driver_plugin: digitalocean
   driver_config:
     image_id: 1505699
-    flavor_id: 63
-    region_id: 4
-  run_list: fake::single
-
-- name: debian-60
-  driver_plugin: digitalocean
-  driver_config:
-    image_id: 12573
     flavor_id: 63
     region_id: 4
   run_list: fake::single
