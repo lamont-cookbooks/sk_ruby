@@ -68,14 +68,6 @@ platforms:
 #    region_id: 4
 #  run_list: fake::single
 
-- name: fedora-17-desktop
-  driver_plugin: digitalocean
-  driver_config:
-    image_id: 32419
-    flavor_id: 63
-    region_id: 4
-  run_list: fake::single
-
 - name: fedora-17
   driver_plugin: digitalocean
   driver_config:
