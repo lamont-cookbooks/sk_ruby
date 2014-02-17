@@ -6,6 +6,7 @@ driver_config:
 provisioner:
   name: chef_zero
   require_chef_omnibus: latest
+  sudo: false
 
 platforms:
 - name: debian-60
@@ -14,7 +15,6 @@ platforms:
     image_id: 12573
     flavor_id: 63
     region_id: 4
-    sudo: false
   run_list: fake::single
 
 - name: ubuntu-1004
