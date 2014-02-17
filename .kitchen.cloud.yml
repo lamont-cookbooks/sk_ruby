@@ -9,6 +9,7 @@ provisioner:
 #  sudo: false
 
 platforms:
+# FIXME: debian-60 has no sudoers
 #- name: debian-60
 #  driver_plugin: digitalocean
 #  driver_config:
@@ -17,29 +18,30 @@ platforms:
 #    region_id: 4
 #  run_list: fake::single
 
-- name: ubuntu-1004
-  driver_plugin: digitalocean
-  driver_config:
-    image_id: 14097
-    flavor_id: 63
-    region_id: 4
-  run_list: fake::single
-
-- name: ubuntu-1204
-  driver_plugin: digitalocean
-  driver_config:
-    image_id: 1505447
-    flavor_id: 63
-    region_id: 4
-  run_list: fake::single
-
-- name: ubuntu-1304
-  driver_plugin: digitalocean
-  driver_config:
-    image_id: 350076
-    flavor_id: 63
-    region_id: 4
-  run_list: fake::single
+# FIXME: disabling because of long runs
+#- name: ubuntu-1004
+#  driver_plugin: digitalocean
+#  driver_config:
+#    image_id: 14097
+#    flavor_id: 63
+#    region_id: 4
+#  run_list: fake::single
+#
+#- name: ubuntu-1204
+#  driver_plugin: digitalocean
+#  driver_config:
+#    image_id: 1505447
+#    flavor_id: 63
+#    region_id: 4
+#  run_list: fake::single
+#
+#- name: ubuntu-1304
+#  driver_plugin: digitalocean
+#  driver_config:
+#    image_id: 350076
+#    flavor_id: 63
+#    region_id: 4
+#  run_list: fake::single
 
 - name: ubuntu-1310
   driver_plugin: digitalocean
