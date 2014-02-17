@@ -2,24 +2,28 @@
 # absolutely will not fix this for Chef 10, do not ask
 use_inline_resources
 
-def platform_string
+def gen_platform_string
   # generate a string indicating which platform version we are on
   platform = node[:platform]
+  platform_version = node[:platform_version]
   # all the EL clones can share pre-build binaries
-  platform = "el" if %w{redhat centos oracle scientific}.include?(platform)
+  if %w{redhat centos oracle scientific}.include?(platform)
+    platform = "el"
+    platform_version = platform_version.match(/^(\d+\.\d+)/)[1]
+  end
   # FIXME: amazon and fedora could probably share el binaries
 
   arch = node[:kernel][:machine] == "x86_64" ? "amd64" : "i386"
 
-  "#{platform}_#{node[:platform_version]}_#{arch}".gsub(/\./, "_")
+  "#{platform}_#{platform_version}_#{arch}".gsub(/\./, "_")
 end
 
-def pkg_file(new_resource)
+def gen_pkg_file(new_resource)
   ruby_version = new_resource.version
   pkg_version = new_resource.pkg_version || "0.0.1"
 
-  platform_string = platform_string
-  pkg_file = new_resource.pkg_file || "ruby-#{ruby_version}-#{pkg_version}_#{platform_string}_#{arch}"
+  platform_string = gen_platform_string
+  pkg_file = new_resource.pkg_file || "ruby-#{ruby_version}-#{pkg_version}_#{platform_string}"
   case node['platform_family']
   when 'debian'
     pkg_file << ".deb"
@@ -29,7 +33,7 @@ def pkg_file(new_resource)
   pkg_file
 end
 
-def pkg_path(pkg_file)
+def gen_pkg_path(pkg_file)
   "#{Chef::Config[:file_cache_path]}/#{pkg_file}"
 end
 
@@ -41,8 +45,8 @@ action :download do
   aws_bucket = new_resource.aws_bucket
   aws_path = new_resource.aws_path
 
-  pkg_file = pkg_file(new_resource)
-  pkg_path = pkg_path(pkg_file)
+  pkg_file = gen_pkg_file(new_resource)
+  pkg_path = gen_pkg_path(pkg_file)
 
   if aws_access_key_id && aws_secret_access_key && aws_bucket && aws_path
     sk_s3_file pkg_path do
@@ -94,8 +98,8 @@ action :install do
   install_path = new_resource.install_path || "/opt/ruby-#{ruby_version}"
   url = new_resource.ruby_url || "ftp://ftp.ruby-lang.org//pub/ruby/#{ruby_minor_version}/ruby-#{ruby_version}.tar.gz"
 
-  pkg_file = pkg_file(new_resource)
-  pkg_path = pkg_path(pkg_file)
+  pkg_file = gen_pkg_file(new_resource)
+  pkg_path = gen_pkg_path(pkg_file)
 
   jobs = 3
   jobs = node['cpu']['total'] + 1 if node['cpu'] && node['cpu']['total']
