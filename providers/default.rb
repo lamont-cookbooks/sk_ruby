@@ -81,8 +81,8 @@ action :install do
       rm -f /tmp/ruby-#{ruby_version}.tar.gz
       wget #{url}
       tar xzf ruby-#{ruby_version}.tar.gz && cd ruby-#{ruby_version}
-      ./configure --prefix=#{install_path} --disable-install-doc
-      make -j #{jobs}
+      ./configure --prefix=#{install_path} --disable-install-doc >/dev/null
+      make -j #{jobs} >/dev/null
       rm -rf #{install_path}
       make install
     EOF
@@ -97,7 +97,7 @@ action :install do
         rm -f /tmp/rubygems-#{rubygems_version}.tgz
         wget http://production.cf.rubygems.org/rubygems/rubygems-#{rubygems_version}.tgz
         tar -xzf rubygems-#{rubygems_version}.tgz && cd rubygems-#{rubygems_version}
-        #{install_path}/bin/ruby setup.rb --no-format-executable
+        #{install_path}/bin/ruby setup.rb --no-format-executable >/dev/null
       EOF
       environment 'LC_ALL' => 'en_US.utf-8' # rubygems 2.0.3 hack
       not_if { ::File.exists?(pkg_path) }
@@ -107,7 +107,7 @@ action :install do
       bash "install gem #{gem} into #{ruby_version}" do
         cwd "/tmp"
         code <<-EOF
-          #{install_path}/bin/gem install #{gem} -V --force --no-rdoc --no-ri
+          #{install_path}/bin/gem install #{gem} --force --no-rdoc --no-ri
         EOF
         not_if { ::File.exists?(pkg_path) }
       end
