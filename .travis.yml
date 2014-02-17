@@ -20,7 +20,7 @@ script:
 - bundle exec rake travis --trace
 after_script:
 - KITCHEN_YAML=.kitchen.cloud.yml bundle exec kitchen destroy
-- cat .kitchen/logs/single-centos-58.log
+- cat .kitchen/logs/*
 env:
   global:
   - secure: T8MEXNkd0y+Yq3N4uMr8YYjKhjXFUuoD1RBV7XDL1kdaG/jBWBOnNltfEhm/GyTKL+WLInLFF/jHs1PFoZY85+sPYFN7lCcW1Lkk6jT/OZueyHh3nZjk/GZCWbqJWCTkYPNDEXwRn36Jn3XYiwA0nGhfXAVvwu/AOQkq4nYch50=
