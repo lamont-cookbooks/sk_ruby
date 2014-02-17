@@ -6,16 +6,16 @@ driver_config:
 provisioner:
   name: chef_zero
   require_chef_omnibus: latest
-  sudo: false
+#  sudo: false
 
 platforms:
-- name: debian-60
-  driver_plugin: digitalocean
-  driver_config:
-    image_id: 12573
-    flavor_id: 63
-    region_id: 4
-  run_list: fake::single
+#- name: debian-60
+#  driver_plugin: digitalocean
+#  driver_config:
+#    image_id: 12573
+#    flavor_id: 63
+#    region_id: 4
+#  run_list: fake::single
 
 - name: ubuntu-1004
   driver_plugin: digitalocean
@@ -33,13 +33,13 @@ platforms:
     region_id: 4
   run_list: fake::single
 
-#- name: ubuntu-1304
-#  driver_plugin: digitalocean
-#  driver_config:
-#    image_id: 350076
-#    flavor_id: 63
-#    region_id: 4
-#  run_list: fake::single
+- name: ubuntu-1304
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 350076
+    flavor_id: 63
+    region_id: 4
+  run_list: fake::single
 
 - name: ubuntu-1310
   driver_plugin: digitalocean
