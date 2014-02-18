@@ -152,6 +152,8 @@ action :install do
       "fpm -s dir -t deb -n ruby-#{ruby_version} -v #{pkg_version} -p ruby-pkg #{install_path}"
     end
 
+  Chef::Log.debug("fpm command: #{fpm_cmd}")
+
   bash "package ruby #{ruby_version} with fpm" do
     cwd "/tmp"
     code <<-EOF

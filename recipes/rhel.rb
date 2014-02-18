@@ -9,6 +9,6 @@
 include_recipe "yum-epel"
 
 # install packages necessary to build
-%w{ wget zlib-devel openssl-devel libyaml-devel libxml2-devel libxslt-devel readline-devel }.each do |pkg|
+%w{ rpm-build wget zlib-devel openssl-devel libyaml-devel libxml2-devel libxslt-devel readline-devel }.each do |pkg|
   package pkg
 end
