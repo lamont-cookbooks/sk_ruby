@@ -39,12 +39,8 @@ namespace :integration do
   desc 'Run Test Kitchen with cloud plugins'
   task :cloud do
     if ENV['TRAVIS_PULL_REQUEST'] != 'true'
-      Kitchen.logger = Kitchen.default_file_logger
-      @loader = Kitchen::Loader::YAML.new(project_config: './.kitchen.cloud.yml')
-      config = Kitchen::Config.new( loader: @loader)
-      config.instances.each do |instance|
-        instance.test(:always)
-      end
+      ENV['KITCHEN_YAML']='.kitchen.cloud.yml'
+      sh "kitchen test --concurrency 4"
     end
   end
 end

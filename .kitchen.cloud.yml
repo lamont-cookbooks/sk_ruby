@@ -1,4 +1,7 @@
 ---
+settings:
+  concurrency: 4
+
 driver_config:
   digitalocean_client_id: <%= ENV['DIGITAL_OCEAN_CLIENT_ID'] %>
   digitalocean_api_key: <%= ENV['DIGITAL_OCEAN_API_KEY'] %>
@@ -6,7 +9,6 @@ driver_config:
 provisioner:
   name: chef_zero
   require_chef_omnibus: latest
-#  sudo: false
 
 platforms:
 # FIXME: debian-60 has no sudoers
@@ -19,45 +21,45 @@ platforms:
 #  run_list: fake::single
 
 # FIXME: disabling because of long runs
-#- name: ubuntu-1004
-#  driver_plugin: digitalocean
-#  driver_config:
-#    image_id: 14097
-#    flavor_id: 63
-#    region_id: 4
-#  run_list: fake::single
-#
-#- name: ubuntu-1204
-#  driver_plugin: digitalocean
-#  driver_config:
-#    image_id: 1505447
-#    flavor_id: 63
-#    region_id: 4
-#  run_list: fake::single
-#
-#- name: ubuntu-1304
-#  driver_plugin: digitalocean
-#  driver_config:
-#    image_id: 350076
-#    flavor_id: 63
-#    region_id: 4
-#  run_list: fake::single
-#
-#- name: ubuntu-1310
-#  driver_plugin: digitalocean
-#  driver_config:
-#    image_id: 1505699
-#    flavor_id: 63
-#    region_id: 4
-#  run_list: fake::single
-#
-#- name: debian-70
-#  driver_plugin: digitalocean
-#  driver_config:
-#    image_id: 308287
-#    flavor_id: 63
-#    region_id: 4
-#  run_list: fake::single
+- name: ubuntu-1004
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 14097
+    flavor_id: 63
+    region_id: 4
+  run_list: fake::single
+
+- name: ubuntu-1204
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 1505447
+    flavor_id: 63
+    region_id: 4
+  run_list: fake::single
+
+- name: ubuntu-1304
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 350076
+    flavor_id: 63
+    region_id: 4
+  run_list: fake::single
+
+- name: ubuntu-1310
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 1505699
+    flavor_id: 63
+    region_id: 4
+  run_list: fake::single
+
+- name: debian-70
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 308287
+    flavor_id: 63
+    region_id: 4
+  run_list: fake::single
 
 # FIXME: errors
 - name: centos-64
