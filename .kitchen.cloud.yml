@@ -85,13 +85,14 @@ platforms:
 #    region_id: 4
 #  run_list: fake::single
 
-- name: arch-201305
-  driver_plugin: digitalocean
-  driver_config:
-    image_id: 350424
-    flavor_id: 63
-    region_id: 4
-  run_list: fake::single
+# FIXME: arch has no omnibus package
+#- name: arch-201305
+#  driver_plugin: digitalocean
+#  driver_config:
+#    image_id: 350424
+#    flavor_id: 63
+#    region_id: 4
+#  run_list: fake::single
 
 suites:
   - name: single
