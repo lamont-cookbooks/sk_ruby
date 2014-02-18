@@ -15,9 +15,10 @@
 
 ## Description
 
-LWRP to build and install ruby binaries from source into /opt.  Uses fpm to package into RPMs or deb files.  Will download a prebuilt
-cached package from a URL instead of source-compiling.  If given s3 credentials, after source compiling it will upload the package to
-s3 to avoid the build step for other servers (and to completely automate the compile-package-upload-to-s3 process).
+LWRP for source builds of ruby binaries.  Since source building on every chef-client run sucks, I added the ability to download a
+cached pre-build package from S3 so that you only have to download it once.  Since uploading the package to S3 was fussy and manual
+I automated that problem away so that the first time one of your servers builds the new package it uploads it to S3 so that the other
+servers can download it.
 
 This does not use rbenv/rvm/chruby.  It just builds a package and install it into /opt.  There is a helper RPM to wire up all the
 binaries into /usr/bin if you want the package to replace the system ruby packages (otherwise you probably want to either be
