@@ -6,9 +6,9 @@
 
 - You want to install system-wide rubies
 - You want to get away from rvm/rbenv/chruby magic
-- You just want an RPM/Deb that installs into /opt/ruby-<version>
+- You just want an RPM/Deb that installs into `/opt/ruby-<version>`
+- Source builds take too much time, so you'd like to automate uploading and deploying builds from S3
 - You might need multiple versions of ruby+rubygems on your servers side-by-side
-- You want to automate building those packages and caching them in S3
 - You might want some symlinks into /usr/local/bin as a lightweight alternatives system
 - Your current source installed custom rubies (and/or source-installs via rvm/rbenv) take forever to build
 - You think the Chef Omnibus build system is way too heavy for the job
@@ -32,7 +32,7 @@ needs to be used).
 * Fedora ???
 * Debian ??
 
-## Supported Builds:
+## Supported Ruby Builds:
 
 Tested:
 
@@ -47,7 +47,7 @@ Other versions should work, nothing before 1.8.7 will be supported.
 
 * Omnibus Chef >= 11.6.0
 
-DO NOT SUBMIT pull requests for earlier Chef versions, or for non-omnibus Chef support.
+DO NOT SUBMIT pull requests for earlier Chef versions.
 
 ## Cookbook Dependencies
 
