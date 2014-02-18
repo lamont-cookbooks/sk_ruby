@@ -10,6 +10,8 @@ when 'debian'
   include_recipe "sk_ruby::ubuntu"
 when 'rhel', 'fedora'
   include_recipe "sk_ruby::rhel"
+when 'arch'
+  include_recipe "sk_ruby::arch"
 end
 
 # needed for the LWRPs

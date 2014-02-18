@@ -1,4 +1,4 @@
-# Chef sk_ruby Cookbook
+ sk_ruby Cookbook
 
 [![Build Status](https://secure.travis-ci.org/lamont-granquist/sk_ruby.png?branch=master)](http://travis-ci.org/lamont-granquist/sk_ruby)
 
@@ -26,11 +26,18 @@ needs to be used).
 
 ## Supports
 
+Tested:
+
 * Ubuntu 10.04-13.10
 * RHEL/CentOS/Oracle/Scientific 5.x/6.x
-* Amazon 2012.09
-* Fedora ???
-* Debian ??
+* Debian 7.0
+
+Probably Works:
+
+* LinuxMint
+* Amazon 2012.09 (and probably others)
+* Debian 6.0
+* Fedora 18-20?
 
 ## Supported Ruby Builds:
 

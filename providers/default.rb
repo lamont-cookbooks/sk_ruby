@@ -185,5 +185,7 @@ action :install do
     rpm_package pkg_path
   when 'debian'
     dpkg_package pkg_path
+  when 'arch'
+    pacman_package pkg_path
   end
 end
