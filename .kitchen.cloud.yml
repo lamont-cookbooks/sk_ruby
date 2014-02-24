@@ -80,7 +80,7 @@ platforms:
   driver_plugin: digitalocean
   driver_config:
     image_id: 696598
-    flavor_id: 63
+    flavor_id: 62
     region_id: 4
   run_list: fake::single
 
