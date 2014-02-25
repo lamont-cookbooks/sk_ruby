@@ -82,18 +82,13 @@ action :download do
   end
 end
 
-action :install do
+action :compile do
   ruby_version = new_resource.version
   # minor version for "2.0.0-p195" => "2.0"
   ruby_minor_version = new_resource.version[/^(\d+\.\d+)/, 1]
   rubygems_version = new_resource.rubygems
   pkg_version = new_resource.pkg_version || "0.0.1"
   gems = new_resource.gems
-
-  aws_access_key_id = new_resource.aws_access_key_id
-  aws_secret_access_key = new_resource.aws_secret_access_key
-  aws_bucket = new_resource.aws_bucket
-  aws_path = new_resource.aws_path
 
   install_path = new_resource.install_path || "/opt/ruby-#{ruby_version}"
   url = new_resource.ruby_url || "ftp://ftp.ruby-lang.org//pub/ruby/#{ruby_minor_version}/ruby-#{ruby_version}.tar.gz"
@@ -163,6 +158,18 @@ action :install do
     EOF
     not_if { ::File.exists?(pkg_path) }
   end
+end
+
+action :upload do
+  ruby_version = new_resource.version
+
+  aws_access_key_id = new_resource.aws_access_key_id
+  aws_secret_access_key = new_resource.aws_secret_access_key
+  aws_bucket = new_resource.aws_bucket
+  aws_path = new_resource.aws_path
+
+  pkg_file = gen_pkg_file(new_resource)
+  pkg_path = gen_pkg_path(pkg_file)
 
   if aws_access_key_id && aws_secret_access_key && aws_bucket && aws_path
     ruby_block "uploading #{ruby_version} to S3" do
@@ -179,6 +186,11 @@ action :install do
       action :nothing
     end
   end
+end
+
+action :install do
+  pkg_file = gen_pkg_file(new_resource)
+  pkg_path = gen_pkg_path(pkg_file)
 
   case node['platform_family']
   when 'rhel', 'fedora'
