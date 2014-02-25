@@ -20,61 +20,61 @@ platforms:
 #    region_id: 4
 #  run_list: fake::single
 
-#- name: ubuntu-1004
-#  driver_plugin: digitalocean
-#  driver_config:
-#    image_id: 14097
-#    flavor_id: 63
-#    region_id: 4
-#  run_list: fake::single
-#
-#- name: ubuntu-1204
-#  driver_plugin: digitalocean
-#  driver_config:
-#    image_id: 1505447
-#    flavor_id: 63
-#    region_id: 4
-#  run_list: fake::single
-#
-#- name: ubuntu-1304
-#  driver_plugin: digitalocean
-#  driver_config:
-#    image_id: 350076
-#    flavor_id: 63
-#    region_id: 4
-#  run_list: fake::single
-#
-#- name: ubuntu-1310
-#  driver_plugin: digitalocean
-#  driver_config:
-#    image_id: 1505699
-#    flavor_id: 63
-#    region_id: 4
-#  run_list: fake::single
-#
-#- name: debian-70
-#  driver_plugin: digitalocean
-#  driver_config:
-#    image_id: 308287
-#    flavor_id: 63
-#    region_id: 4
-#  run_list: fake::single
-#
-#- name: centos-64
-#  driver_plugin: digitalocean
-#  driver_config:
-#    image_id: 562354
-#    flavor_id: 63
-#    region_id: 4
-#  run_list: fake::single
-#
-#- name: centos-58
-#  driver_plugin: digitalocean
-#  driver_config:
-#    image_id: 1601
-#    flavor_id: 63
-#    region_id: 4
-#  run_list: fake::single
+- name: ubuntu-1004
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 14097
+    flavor_id: 63
+    region_id: 4
+  run_list: fake::single
+
+- name: ubuntu-1204
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 1505447
+    flavor_id: 63
+    region_id: 4
+  run_list: fake::single
+
+- name: ubuntu-1304
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 350076
+    flavor_id: 63
+    region_id: 4
+  run_list: fake::single
+
+- name: ubuntu-1310
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 1505699
+    flavor_id: 63
+    region_id: 4
+  run_list: fake::single
+
+- name: debian-70
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 308287
+    flavor_id: 63
+    region_id: 4
+  run_list: fake::single
+
+- name: centos-64
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 562354
+    flavor_id: 63
+    region_id: 4
+  run_list: fake::single
+
+- name: centos-58
+  driver_plugin: digitalocean
+  driver_config:
+    image_id: 1601
+    flavor_id: 63
+    region_id: 4
+  run_list: fake::single
 
 - name: fedora-19
   driver_plugin: digitalocean
