@@ -13,8 +13,19 @@ describe "fake::single" do
         ).converge(described_recipe)
       end
 
-      it "installs ruby 2.1.0" do
+      it "runs sk_ruby :download" do
         expect(test_fake_single).to download_sk_ruby("2.1.0")
+      end
+
+      it "runs sk_ruby :compile" do
+        expect(test_fake_single).to compile_sk_ruby("2.1.0")
+      end
+
+      it "runs sk_ruby :upload" do
+        expect(test_fake_single).to upload_sk_ruby("2.1.0")
+      end
+
+      it "runs sk_ruby :install" do
         expect(test_fake_single).to install_sk_ruby("2.1.0")
       end
 
