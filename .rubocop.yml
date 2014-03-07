@@ -1,26 +1,22 @@
-# People who care about this need to get a life
-StringLiterals:
+ClassLength:
   Enabled: false
-# People who care about this need to learn to open up wider windows
+CommentAnnotation:
+  Enabled: false
+Encoding:
+  Enabled: false
+FavorSprintf:
+  Enabled: false
 LineLength:
   Enabled: false
-# Method names should be as long as they need to be
 MethodLength:
   Enabled: false
-# I use spaces inside parens/brackets when I feel it increases readability
-SpaceInsideParens:
+SignalException:
   Enabled: false
 SpaceInsideBrackets:
   Enabled: false
-# Nope, not doing this
-SignalException:
+SpaceInsideParens:
   Enabled: false
-# This is just outright ass-backwards
+StringLiterals:
+  Enabled: false
 TrailingComma:
   EnforcedStyleForMultiline: comma
-# Prevents multi-line annotated comments, why?
-CommentAnnotation:
-  Enabled: false
-# This would be more useful if it would alert only on files that had UTF-8 chars in them
-Encoding:
-  Enabled: false
