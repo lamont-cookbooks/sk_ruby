@@ -32,6 +32,7 @@ Tested:
 * Ubuntu 10.04-13.10
 * RHEL/CentOS/Oracle/Scientific 5.x/6.x
 * Debian 7.0
+* Fedora 19
 
 Probably Works:
 
@@ -54,8 +55,6 @@ Other versions should work, nothing before 1.8.7 will be supported.
 ## Requirements
 
 * Omnibus Chef >= 11.6.0
-
-DO NOT SUBMIT pull requests for earlier Chef versions.
 
 ## Cookbook Dependencies
 
@@ -160,6 +159,15 @@ Put 'depends sk_ruby' in your metadata.rb to gain access to the LWRPs in your co
 a pacakge to S3 yet.  The stack trace is not a bug.  Needs fixing in Chef.
 
 - Right after the 404 the `remote_file` resource leaves a zero-length turd which we are forced to clean up.  Needs fixing in Chef.
+
+## Contributing
+
+Just open a PR or Issue on GitHub.
+
+DO NOT Submit PRs for Ruby 1.8.7 support.
+DO NOT Submit PRs for Chef < 11.6.0 support.
+
+If you want either of those, make a fork and maintain it yourself.
 
 ## License and Author
 
