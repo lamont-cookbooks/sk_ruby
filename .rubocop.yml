@@ -2,6 +2,8 @@ ClassLength:
   Enabled: false
 CommentAnnotation:
   Enabled: false
+Documentation:
+  Enabled: false
 DoubleNegation:
   Enabled: false
 Encoding:
