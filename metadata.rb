@@ -6,7 +6,7 @@ long_description "LWRPs for installing source-built rubies.  Automatically uploa
 version          "2.0.0"
 name             "sk_ruby"
 
-depends "build-essential"
+depends "build-essential", '>= 2.0.0'
 depends "apt"
 depends "sk_s3_file"
 depends "yum-epel"
