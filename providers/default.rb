@@ -111,7 +111,7 @@ action :compile do
       rm -rf #{install_path}
       make install
     EOF
-    not_if { ::File.exists?(pkg_path) }
+    not_if { ::File.exist?(pkg_path) }
   end
 
   if rubygems_version
@@ -125,7 +125,7 @@ action :compile do
         #{install_path}/bin/ruby setup.rb --no-format-executable >/dev/null
       EOF
       environment 'LC_ALL' => 'en_US.utf-8' # rubygems 2.0.3 hack
-      not_if { ::File.exists?(pkg_path) }
+      not_if { ::File.exist?(pkg_path) }
     end
 
     gems.each do |gem|
@@ -134,7 +134,7 @@ action :compile do
         code <<-EOF
           #{install_path}/bin/gem install #{gem} --force --no-rdoc --no-ri
         EOF
-        not_if { ::File.exists?(pkg_path) }
+        not_if { ::File.exist?(pkg_path) }
       end
     end
   end
@@ -156,7 +156,7 @@ action :compile do
       mv ruby-pkg #{pkg_path}
       rm -rf #{install_path} /tmp/ruby-#{ruby_version} /tmp/ruby-#{ruby_version}.tar.gz
     EOF
-    not_if { ::File.exists?(pkg_path) }
+    not_if { ::File.exist?(pkg_path) }
   end
 end
 

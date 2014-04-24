@@ -8,7 +8,7 @@ DoubleNegation:
   Enabled: false
 Encoding:
   Enabled: false
-FavorSprintf:
+FormatString:
   Enabled: false
 LineLength:
   Enabled: false
@@ -17,6 +17,8 @@ MethodLength:
 PercentLiteralDelimiters:
   Enabled: false
 SignalException:
+  Enabled: false
+SingleSpaceBeforeFirstArg:
   Enabled: false
 SpaceInsideBrackets:
   Enabled: false

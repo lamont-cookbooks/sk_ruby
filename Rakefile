@@ -12,7 +12,7 @@ namespace :style do
   FoodCritic::Rake::LintTask.new(:chef) do |t|
     t.options = {
       fail_tags: ['any'],
-      tags: ['~FC023', '~FC019', '~FC048']
+      tags: ['~FC023', '~FC019', '~FC048'],
     }
   end
 end
@@ -39,7 +39,7 @@ namespace :integration do
   desc 'Run Test Kitchen with cloud plugins'
   task :cloud do
     if ENV['TRAVIS_PULL_REQUEST'] != 'true'
-      ENV['KITCHEN_YAML']='.kitchen.cloud.yml'
+      ENV['KITCHEN_YAML'] = '.kitchen.cloud.yml'
       sh "kitchen test --concurrency 4"
     end
   end
