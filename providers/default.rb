@@ -182,7 +182,7 @@ action :upload do
         object.acl(:public_read) # FIXME: make into parameter
         object.write(Pathname.new(pkg_path))
       end
-      subscribes :run, "ruby_block[package ruby #{ruby_version} with fpm]", :immediately
+      subscribes :run, "bash[package ruby #{ruby_version} with fpm]", :immediately
       action :nothing
     end
   end
