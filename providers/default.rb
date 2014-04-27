@@ -171,20 +171,24 @@ action :upload do
   pkg_file = gen_pkg_file(new_resource)
   pkg_path = gen_pkg_path(pkg_file)
 
-  if aws_access_key_id && aws_secret_access_key && aws_bucket && aws_path
-    ruby_block "uploading #{ruby_version} to S3" do
-      block do
-        require 'aws-sdk'
-        s3 = AWS::S3.new(access_key_id: aws_access_key_id, secret_access_key: aws_secret_access_key)
-        s3.client
-        bucket = s3.buckets[ aws_bucket ]
-        object = bucket.objects[ "#{aws_path}/#{pkg_file}" ]
+  unless aws_access_key_id && aws_secret_access_key && aws_bucket && aws_path
+    raise "cannot upload to S3 without S3 creds"
+  end
+
+  ruby_block "uploading #{ruby_version} to S3" do
+    block do
+      require 'aws-sdk'
+      s3 = AWS::S3.new(access_key_id: aws_access_key_id, secret_access_key: aws_secret_access_key)
+      s3.client
+      bucket = s3.buckets[ aws_bucket ]
+      object = bucket.objects[ "#{aws_path}/#{pkg_file}" ]
+      unless object.exists?
         object.acl(:public_read) # FIXME: make into parameter
         object.write(Pathname.new(pkg_path))
       end
-      subscribes :run, "bash[package ruby #{ruby_version} with fpm]", :immediately
-      action :nothing
     end
+    only_if { ::File.exist?(pkg_path) }
+    action :run
   end
 end
 
