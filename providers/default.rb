@@ -175,18 +175,21 @@ action :upload do
     raise "cannot upload to S3 without S3 creds"
   end
 
+  unless ::File.exist?(pkg_path)
+    raise "no package at #{pkg_path} to upload"
+  end
+
+  require 'aws-sdk'
+  s3 = AWS::S3.new(access_key_id: aws_access_key_id, secret_access_key: aws_secret_access_key)
+  s3.client
+  bucket = s3.buckets[ aws_bucket ]
+  object = bucket.objects[ "#{aws_path}/#{pkg_file}" ]
+
   ruby_block "uploading #{ruby_version} to S3" do
     block do
-      require 'aws-sdk'
-      s3 = AWS::S3.new(access_key_id: aws_access_key_id, secret_access_key: aws_secret_access_key)
-      s3.client
-      bucket = s3.buckets[ aws_bucket ]
-      object = bucket.objects[ "#{aws_path}/#{pkg_file}" ]
-      unless object.exists?
-        object.write(Pathname.new(pkg_path), acl: :public_read)
-      end
+      object.write(Pathname.new(pkg_path), acl: :public_read)
     end
-    only_if { ::File.exist?(pkg_path) }
+    not_if { object_exists? }
     action :run
   end
 end
