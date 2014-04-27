@@ -183,8 +183,7 @@ action :upload do
       bucket = s3.buckets[ aws_bucket ]
       object = bucket.objects[ "#{aws_path}/#{pkg_file}" ]
       unless object.exists?
-        object.acl = :public_read # FIXME: make into parameter
-        object.write(Pathname.new(pkg_path))
+        object.write(Pathname.new(pkg_path), acl: :public_read)
       end
     end
     only_if { ::File.exist?(pkg_path) }
