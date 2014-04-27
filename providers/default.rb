@@ -189,7 +189,7 @@ action :upload do
     block do
       object.write(Pathname.new(pkg_path), acl: :public_read)
     end
-    not_if { object_exists? }
+    not_if { object.exists? }
     action :run
   end
 end
