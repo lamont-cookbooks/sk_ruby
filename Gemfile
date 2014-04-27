@@ -14,4 +14,4 @@ gem 'kitchen-digitalocean'
 gem 'kitchen-ec2'
 gem 'rake'
 
-gem 'travis'
+gem 'knife-spork'
