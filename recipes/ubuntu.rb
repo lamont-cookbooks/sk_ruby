@@ -2,7 +2,7 @@
 include_recipe "apt"
 
 # remove old rubies
-pkgs_remove = %w{ ruby ruby1.8-dev ruby1.9.1 ruby1.9.3 ruby1.9.1-dev libruby1.9.1 libruby-extras libruby1.8-extras rubygems rubygems1.8 }
+pkgs_remove = %w{ ruby ruby1.9.1 ruby1.9.3 ruby1.9.1-dev libruby1.9.1 libruby-extras libruby1.8-extras }
 
 if node['platform'] == 'ubuntu' && node['platform_version'].to_f < 14.04
   pkgs_remove += %w{ ruby1.8-dev rubygems rubygems1.8 }
