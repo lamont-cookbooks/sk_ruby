@@ -2,7 +2,13 @@
 include_recipe "apt"
 
 # remove old rubies
-%w{ ruby ruby1.8-dev ruby1.9.1 ruby1.9.3 ruby1.9.1-dev libruby1.9.1 libruby-extras libruby1.8-extras rubygems rubygems1.8 }.each do |pkg|
+pkgs_remove = %w{ ruby ruby1.8-dev ruby1.9.1 ruby1.9.3 ruby1.9.1-dev libruby1.9.1 libruby-extras libruby1.8-extras rubygems rubygems1.8 }
+
+if node['platform'] == 'ubuntu' && node['platform_version'].to_f < 14.04
+  pkgs_remove += %w{ ruby1.8-dev rubygems rubygems1.8 }
+end
+
+pkgs_remove.each do |pkg|
   package pkg do
     action :remove
     epic_fail true
