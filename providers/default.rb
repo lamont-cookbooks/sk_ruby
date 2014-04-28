@@ -99,6 +99,12 @@ action :compile do
   jobs = 3
   jobs = node['cpu']['total'] + 1 if node['cpu'] && node['cpu']['total']
 
+  configure_args = -"-prefix=#{install_path} --disable-install-doc"
+
+  if node['platform'] == 'ubuntu' && node['platform_version'].to_f >= 14.04
+    configure_args .= " --with-readline-dir=/usr/lib/x86_64-linux-gnu/libreadline.so"
+  end
+
   bash "compile ruby #{ruby_version} from sources" do
     cwd "/tmp"
     code <<-EOF
@@ -106,7 +112,7 @@ action :compile do
       rm -f /tmp/ruby-#{ruby_version}.tar.gz
       wget #{url}
       tar xzf ruby-#{ruby_version}.tar.gz && cd ruby-#{ruby_version}
-      ./configure --prefix=#{install_path} --disable-install-doc >/dev/null
+      ./configure #{configure_args} >/dev/null
       make -j #{jobs} >/dev/null
       rm -rf #{install_path}
       make install
