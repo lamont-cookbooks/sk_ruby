@@ -99,10 +99,10 @@ action :compile do
   jobs = 3
   jobs = node['cpu']['total'] + 1 if node['cpu'] && node['cpu']['total']
 
-  configure_args = -"-prefix=#{install_path} --disable-install-doc"
+  configure_args = "-prefix=#{install_path} --disable-install-doc"
 
   if node['platform'] == 'ubuntu' && node['platform_version'].to_f >= 14.04
-    configure_args .= " --with-readline-dir=/usr/lib/x86_64-linux-gnu/libreadline.so"
+    configure_args << " --with-readline-dir=/usr/lib/x86_64-linux-gnu/libreadline.so"
   end
 
   bash "compile ruby #{ruby_version} from sources" do
