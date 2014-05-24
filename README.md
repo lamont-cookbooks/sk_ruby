@@ -5,14 +5,10 @@
 
 ## Audience (AKA Why Another Ruby Cookbook?)
 
-- You want to install system-wide rubies
-- You want to get away from rvm/rbenv/chruby magic
-- You just want an RPM/Deb that installs into `/opt/ruby-<version>`
-- Source builds take too much time, so you'd like to automate uploading and deploying builds from S3
-- You might need multiple versions of ruby+rubygems on your servers side-by-side
-- You might want some symlinks into /usr/local/bin as a lightweight alternatives system
-- Your current source installed custom rubies (and/or source-installs via rvm/rbenv) take forever to build
-- You think the Chef Omnibus build system is way too heavy for the job
+- Rebuilding ruby from source on every install is stupid (build once then install binaries)
+- Most ruby versions managers have too much magic sauce
+- I just want to install an RPM/deb into /opt
+- I might want some symlinks in /usr/local/bin to the latest version
 
 ## Description
 
