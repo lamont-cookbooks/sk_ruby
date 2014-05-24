@@ -1,5 +1,6 @@
  sk_ruby Cookbook
 
+[![Cookbook Version](https://img.shields.io/cookbook/v/sk_ruby.svg)](https://community.opscode.com/cookbooks/sk_ruby)
 [![Build Status](https://secure.travis-ci.org/lamont-granquist/sk_ruby.png?branch=master)](http://travis-ci.org/lamont-granquist/sk_ruby)
 
 ## Audience (AKA Why Another Ruby Cookbook?)
