@@ -10,6 +10,8 @@ Encoding:
   Enabled: false
 FormatString:
   Enabled: false
+IfUnlessModifier:
+  Enabled: false
 LineLength:
   Enabled: false
 MethodLength:
