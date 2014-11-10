@@ -9,6 +9,6 @@
 include_recipe "yum-epel" unless node['platform'] == 'fedora'
 
 # install packages necessary to build
-%w{ rpm-build wget zlib-devel openssl-devel libyaml-devel libxml2-devel libxslt-devel readline-devel }.each do |pkg|
+%w{ rpm-build wget openssl-devel libyaml-devel libxml2-devel libxslt-devel readline-devel }.each do |pkg|
   package pkg
 end

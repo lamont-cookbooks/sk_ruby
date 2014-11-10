@@ -4,7 +4,19 @@
 #
 
 include_recipe "build-essential"
-include_recipe "zlib"
+
+# FIXME: port into opscode-cookbooks
+package "zlib-devel compiletime install" do
+  package_name case node['platform_family']
+               when 'rhel', 'fedora', 'suse'
+                 'zlib-devel'
+               when 'arch'
+                 'zlib'
+               else
+                 'zlib1g-dev'
+               end
+  action :nothing
+end.run_action(:install)
 
 case node['platform_family']
 when 'debian'
