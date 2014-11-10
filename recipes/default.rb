@@ -4,6 +4,7 @@
 #
 
 include_recipe "build-essential"
+include_recipe "zlib"
 
 case node['platform_family']
 when 'debian'

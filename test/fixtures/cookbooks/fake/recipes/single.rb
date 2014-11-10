@@ -12,7 +12,10 @@ sk_ruby "2.1.0" do
   gems my_gems
   cache_uri_base "http://s3.scriptkiddie.org/nonexist"
   pkg_version "0.0.1"
-#  action [ :download, :install ]
+  aws_path "/something"
+  aws_bucket "mybucket"
+  aws_access_key_id "AKIAIISJV5TZ3FPWU3TA"
+  aws_secret_access_key "ABCDEFGHIJKLMNOP1234556/s"
 end
 
 sk_ruby_symlinks "/opt/ruby-2.1.0/bin"

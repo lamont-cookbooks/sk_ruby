@@ -18,4 +18,8 @@ if defined?(ChefSpec)
   def install_sk_ruby_symlinks(resource_name)
     ChefSpec::Matchers::ResourceMatcher.new(:sk_ruby_symlinks, :install, resource_name)
   end
+
+  def create_sk_s3_file(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:sk_s3_file, :create, resource_name)
+  end
 end

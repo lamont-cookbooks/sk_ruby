@@ -2,48 +2,48 @@
 # absolutely will not fix this for Chef 10, do not ask
 use_inline_resources
 
-def gen_platform_string
-  # generate a string indicating which platform version we are on
-  platform = node[:platform]
-  platform_version = node[:platform_version]
-  # all the EL clones can share pre-build binaries
-  if %w{redhat centos oracle scientific}.include?(platform)
-    platform = "el"
-    platform_version = platform_version.match(/^(\d+)/)[1]
+  def gen_platform_string
+    # generate a string indicating which platform version we are on
+    platform = node[:platform]
+    platform_version = node[:platform_version]
+    # all the EL clones can share pre-build binaries
+    if %w{redhat centos oracle scientific}.include?(platform)
+      platform = "el"
+      platform_version = platform_version.match(/^(\d+)/)[1]
+    end
+    # FIXME: amazon and fedora could probably share el binaries
+
+    arch = node[:kernel][:machine] == "x86_64" ? "amd64" : "i386"
+
+    "#{platform}_#{platform_version}_#{arch}".gsub(/\./, "_")
   end
-  # FIXME: amazon and fedora could probably share el binaries
 
-  arch = node[:kernel][:machine] == "x86_64" ? "amd64" : "i386"
+  def gen_pkg_file(new_resource)
+    ruby_version = new_resource.version
+    pkg_version = new_resource.pkg_version || "0.0.1"
 
-  "#{platform}_#{platform_version}_#{arch}".gsub(/\./, "_")
-end
-
-def gen_pkg_file(new_resource)
-  ruby_version = new_resource.version
-  pkg_version = new_resource.pkg_version || "0.0.1"
-
-  platform_string = gen_platform_string
-  pkg_file = new_resource.pkg_file || "ruby-#{ruby_version}-#{pkg_version}_#{platform_string}"
-  case node['platform_family']
-  when 'debian'
-    pkg_file << ".deb"
-  when 'rhel', 'fedora'
-    pkg_file << ".rpm"
+    platform_string = gen_platform_string
+    pkg_file = new_resource.pkg_file || "ruby-#{ruby_version}-#{pkg_version}_#{platform_string}"
+    case node['platform_family']
+    when 'debian'
+      pkg_file << ".deb"
+    when 'rhel', 'fedora'
+      pkg_file << ".rpm"
+    end
+    pkg_file
   end
-  pkg_file
-end
 
-def gen_pkg_path(pkg_file)
-  "#{Chef::Config[:file_cache_path]}/#{pkg_file}"
-end
+  def gen_pkg_path(pkg_file)
+    "#{Chef::Config[:file_cache_path]}/#{pkg_file}"
+  end
 
 action :download do
   cache_uri_base = new_resource.cache_uri_base
 
-  aws_access_key_id = new_resource.aws_access_key_id
+  aws_access_key_id     = new_resource.aws_access_key_id
   aws_secret_access_key = new_resource.aws_secret_access_key
-  aws_bucket = new_resource.aws_bucket
-  aws_path = new_resource.aws_path
+  aws_bucket            = new_resource.aws_bucket
+  aws_path              = new_resource.aws_path
 
   pkg_file = gen_pkg_file(new_resource)
   pkg_path = gen_pkg_path(pkg_file)
@@ -117,7 +117,7 @@ action :compile do
       rm -rf #{install_path}
       make install
     EOF
-    not_if { ::File.exist?(pkg_path) }
+    only_if { ::SKRubyHelpers.do_compile?(pkg_path) }
   end
 
   if rubygems_version
@@ -131,7 +131,7 @@ action :compile do
         #{install_path}/bin/ruby setup.rb --no-format-executable >/dev/null
       EOF
       environment 'LC_ALL' => 'en_US.utf-8' # rubygems 2.0.3 hack
-      not_if { ::File.exist?(pkg_path) }
+      only_if { ::SKRubyHelpers.do_compile?(pkg_path) }
     end
 
     gems.each do |gem|
@@ -140,7 +140,7 @@ action :compile do
         code <<-EOF
           #{install_path}/bin/gem install #{gem} --force --no-rdoc --no-ri
         EOF
-        not_if { ::File.exist?(pkg_path) }
+        only_if { ::SKRubyHelpers.do_compile?(pkg_path) }
       end
     end
   end
@@ -162,17 +162,17 @@ action :compile do
       mv ruby-pkg #{pkg_path}
       rm -rf #{install_path} /tmp/ruby-#{ruby_version} /tmp/ruby-#{ruby_version}.tar.gz
     EOF
-    not_if { ::File.exist?(pkg_path) }
+    only_if { ::SKRubyHelpers.do_compile?(pkg_path) }
   end
 end
 
 action :upload do
   ruby_version = new_resource.version
 
-  aws_access_key_id = new_resource.aws_access_key_id
+  aws_access_key_id     = new_resource.aws_access_key_id
   aws_secret_access_key = new_resource.aws_secret_access_key
-  aws_bucket = new_resource.aws_bucket
-  aws_path = new_resource.aws_path
+  aws_bucket            = new_resource.aws_bucket
+  aws_path              = new_resource.aws_path
 
   pkg_file = gen_pkg_file(new_resource)
   pkg_path = gen_pkg_path(pkg_file)
