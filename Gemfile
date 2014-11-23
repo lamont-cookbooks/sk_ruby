@@ -8,6 +8,7 @@ gem 'chefspec', '>= 3.2.0'
 gem 'test-kitchen', '>= 1.2.1'
 gem 'aws-sdk'
 gem 'knife-spork', '>= 1.4.2'
+gem 'stove', '>= 3.2.3'
 
 group :kitchen_vagrant do
   gem 'kitchen-vagrant', '>= 0.14.0'
