@@ -1,6 +1,7 @@
 require 'chefspec'
 require 'chefspec/berkshelf'
 require 'chefspec/cacher'
+require 'matchers'
 
 $: << File.expand_path(File.join(File.dirname( __FILE__ ), "../libraries"))
 
