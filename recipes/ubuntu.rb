@@ -15,8 +15,10 @@ pkgs_remove.each do |pkg|
   end
 end
 
+include_recipe "xml"
+
 # install packages necessary to build
-%w{ wget zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev }.each do |pkg|
+%w{ wget zlib1g-dev libssl-dev libyaml-dev }.each do |pkg|
   package pkg
 end
 

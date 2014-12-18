@@ -1,6 +1,8 @@
 
 execute "pacman --sync -yy"
 
-%w{ wget zlib libxml2 libxslt libyaml openssl readline }.each do |pkg|
+include_recipe "xml"
+
+%w{ wget zlib libyaml openssl readline }.each do |pkg|
   package pkg
 end
