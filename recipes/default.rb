@@ -28,5 +28,11 @@ when 'arch'
 end
 
 # needed for the LWRPs
-chef_gem "fpm"
-chef_gem "aws-sdk"
+chef_gem "fpm" do
+  compile_time false if respond_to?(:compile_time)
+end
+
+chef_gem "aws-sdk" do
+  version "~> 1.0"
+  compile_time false if respond_to?(:compile_time)
+end
