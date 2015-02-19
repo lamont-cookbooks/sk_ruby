@@ -10,5 +10,4 @@ depends "build-essential", '>= 2.0.0'
 depends "apt"
 depends "sk_s3_file"
 depends "yum-epel"
-depends "zlib"
-depends "xml"
+depends "multipackage"

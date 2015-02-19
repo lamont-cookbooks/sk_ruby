@@ -15,15 +15,11 @@ pkgs_remove.each do |pkg|
   end
 end
 
-include_recipe "xml"
-
 # install packages necessary to build
-%w{ wget zlib1g-dev libssl-dev libyaml-dev }.each do |pkg|
-  package pkg
-end
+multipackage %w{ wget zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev }
 
 if node['platform'] == 'ubuntu' && node['platform_version'].to_f < 11.10
-  package "libreadline5-dev"
+  multipackage "libreadline5-dev"
 else
-  package "libreadline6-dev"
+  multipackage "libreadline6-dev"
 end

@@ -5,9 +5,7 @@
 
 include_recipe "build-essential"
 
-# FIXME: port into opscode-cookbooks
-package "zlib-devel compiletime install" do
-  package_name case node['platform_family']
+zlib_package = case node['platform_family']
                when 'rhel', 'fedora', 'suse'
                  'zlib-devel'
                when 'arch'
@@ -15,8 +13,15 @@ package "zlib-devel compiletime install" do
                else
                  'zlib1g-dev'
                end
-  action :nothing
-end.run_action(:install)
+
+if Gem::Requirement.new("<= 12.1.0").satisfied_by?(Gem::Version.new(Chef::VERSION))
+  package "zlib-devel compiletime install" do
+    package_name zlib_package
+    action :nothing
+  end.run_action(:install)
+else
+  multipackage zlib_paackage
+end
 
 case node['platform_family']
 when 'debian'
@@ -34,5 +39,5 @@ end
 
 chef_gem "aws-sdk" do
   version "~> 1.0"
-  compile_time false if respond_to?(:compile_time)
+  compile_time false
 end
