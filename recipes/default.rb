@@ -39,5 +39,5 @@ end
 
 chef_gem "aws-sdk" do
   version "~> 1.0"
-  compile_time false
+  compile_time false if respond_to?(:compile_time)
 end
