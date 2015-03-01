@@ -20,7 +20,7 @@ if Gem::Requirement.new("<= 12.1.0").satisfied_by?(Gem::Version.new(Chef::VERSIO
     action :nothing
   end.run_action(:install)
 else
-  multipackage zlib_paackage
+  multipackage_install zlib_package
 end
 
 case node['platform_family']
