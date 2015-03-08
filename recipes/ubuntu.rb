@@ -8,18 +8,15 @@ if node['platform'] == 'ubuntu' && node['platform_version'].to_f < 14.04
   pkgs_remove += %w{ ruby1.8-dev rubygems rubygems1.8 }
 end
 
-pkgs_remove.each do |pkg|
-  package pkg do
-    action :remove
-    epic_fail true
-  end
+multipackage pkg do
+  action :remove
 end
 
 # install packages necessary to build
 multipackage_install %w{ wget zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev }
 
 if node['platform'] == 'ubuntu' && node['platform_version'].to_f < 11.10
-  multipackage "libreadline5-dev"
+  multipackage_install "libreadline5-dev"
 else
-  multipackage "libreadline6-dev"
+  multipackage_install "libreadline6-dev"
 end
