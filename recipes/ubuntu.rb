@@ -8,7 +8,7 @@ if node['platform'] == 'ubuntu' && node['platform_version'].to_f < 14.04
   pkgs_remove += %w{ ruby1.8-dev rubygems rubygems1.8 }
 end
 
-multipackage pkg do
+multipackage pkgs_remove do
   action :remove
 end
 
