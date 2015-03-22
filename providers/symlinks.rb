@@ -5,6 +5,13 @@ action :install do
   bin_path = new_resource.bin_path
   exclude = new_resource.exclude || []
 
+  ruby_block "clear gem paths" do
+    block do
+      Gem.clear_paths
+    end
+    action :nothing
+  end
+
   Dir[ ::File.join(bin_path, "*") ].each do |path|
     file = ::File.basename(path)
     unless exclude.include?(file)
@@ -17,9 +24,4 @@ action :install do
     end
   end
 
-  ruby_block "clear gem paths" do
-    block do
-      Gem.clear_paths
-    end
-  end
 end
