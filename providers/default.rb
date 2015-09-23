@@ -185,6 +185,7 @@ action :upload do
     raise "no package at #{pkg_path} to upload"
   end
 
+  gem "aws-sdk", "~> 1.0"
   require 'aws-sdk'
   s3 = AWS::S3.new(access_key_id: aws_access_key_id, secret_access_key: aws_secret_access_key)
   s3.client
