@@ -13,10 +13,10 @@ multipackage pkgs_remove do
 end
 
 # install packages necessary to build
-multipackage_install %w{ wget zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev }
+multipackage %w{ wget zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev }
 
 if node['platform'] == 'ubuntu' && node['platform_version'].to_f < 11.10
-  multipackage_install "libreadline5-dev"
+  multipackage "libreadline5-dev"
 else
-  multipackage_install "libreadline6-dev"
+  multipackage "libreadline6-dev"
 end
