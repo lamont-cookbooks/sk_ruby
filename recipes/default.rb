@@ -20,7 +20,7 @@ if Gem::Requirement.new("<= 12.1.0").satisfied_by?(Gem::Version.new(Chef::VERSIO
     action :nothing
   end.run_action(:install)
 else
-  multipackage_install zlib_package
+  multipackage zlib_package
 end
 
 case node['platform_family']
@@ -41,4 +41,3 @@ chef_gem "aws-sdk" do
   version "~> 1.0"
   compile_time false if Chef::Resource::ChefGem.instance_methods(false).include?(:compile_time)
 end
-

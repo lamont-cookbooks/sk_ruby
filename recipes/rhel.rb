@@ -10,4 +10,4 @@ include_recipe "yum-epel" unless node['platform'] == 'fedora'
 
 # install packages necessary to build
 
-multipackage_install %w{ libxml2-devel libxslt-devel rpm-build wget openssl-devel libyaml-devel readline-devel }
+multipackage %w{ libxml2-devel libxslt-devel rpm-build wget openssl-devel libyaml-devel readline-devel }
