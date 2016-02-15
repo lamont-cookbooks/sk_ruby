@@ -7,10 +7,10 @@ include_recipe "apt"
 #if node['platform'] == 'ubuntu' && node['platform_version'].to_f < 14.04
 #  pkgs_remove += %w{ ruby1.8-dev rubygems rubygems1.8 }
 #end
-
-multipackage pkgs_remove do
-  action :remove
-end
+#
+#multipackage pkgs_remove do
+#  action :remove
+#end
 
 # install packages necessary to build
 multipackage %w{ wget zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev }
