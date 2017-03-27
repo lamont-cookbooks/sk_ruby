@@ -188,9 +188,9 @@ action :upload do
   gem "aws-sdk", "~> 2.0"
   require 'aws-sdk'
 
-  client = Aws::S3::Client.new(access_key_id: aws_access_key_id, secret_access_key: aws_secret_access_key)
+  client = Aws::S3::Client.new(region: "us-west-1", access_key_id: aws_access_key_id, secret_access_key: aws_secret_access_key)
 
-  s3 = Aws::S3::Resource.new(region: "us-west-1", client: client)
+  s3 = Aws::S3::Resource.new(client: client)
   object = s3.bucket(aws_bucket).object("#{aws_path}/#{pkg_file}")
 
   ruby_block "uploading #{ruby_version} to S3" do
