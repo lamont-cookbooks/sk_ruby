@@ -185,16 +185,17 @@ action :upload do
     raise "no package at #{pkg_path} to upload"
   end
 
-  gem "aws-sdk", "~> 1.0"
+  gem "aws-sdk", "~> 2.0"
   require 'aws-sdk'
-  s3 = AWS::S3.new(access_key_id: aws_access_key_id, secret_access_key: aws_secret_access_key)
-  s3.client
-  bucket = s3.buckets[ aws_bucket ]
-  object = bucket.objects[ "#{aws_path}/#{pkg_file}" ]
+
+  client = Aws::S3::Client.new(access_key_id: aws_access_key_id, secret_access_key: aws_secret_access_key)
+
+  s3 = Aws::S3::Resource.new(client)
+  object = s3.bucket(aws_bucket).object("#{aws_path}/#{pkg_file}")
 
   ruby_block "uploading #{ruby_version} to S3" do
     block do
-      object.write(Pathname.new(pkg_path), acl: :public_read)
+      object.upload_file(Pathname.new(pkg_path))
     end
     not_if { object.exists? }
     action :run

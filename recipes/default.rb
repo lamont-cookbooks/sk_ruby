@@ -34,10 +34,10 @@ end
 
 # needed for the LWRPs
 chef_gem "fpm" do
-  compile_time false if Chef::Resource::ChefGem.instance_methods(false).include?(:compile_time)
+  compile_time false
 end
 
 chef_gem "aws-sdk" do
-  version "~> 1.0"
-  compile_time false if Chef::Resource::ChefGem.instance_methods(false).include?(:compile_time)
+  version "~> 2.0"
+  compile_time false
 end
