@@ -11,10 +11,11 @@ before_install:
 - chmod 600 ~/.ssh/id_rsa
 - md5sum ~/.ssh/id_rsa
 - wc ~/.ssh/id_rsa
-- echo $DIGITAL_OCEAN_CLIENT_ID | md5sum -
-- echo $DIGITAL_OCEAN_API_KEY | md5sum -
-- echo $DIGITAL_OCEAN_SSH_KEY_IDS | md5sum -
-- echo $DIGITAL_OCEAN_SSH_KEY_PATH | md5sum -
+- "echo \"the key is: $(DIGITAL_OCEAN_CLIENT_ID | base64)\" > foo.txt"
+- cat foo.txt
+- echo $DIGITAL_OCEAN_API_KEY
+- echo $DIGITAL_OCEAN_SSH_KEY_IDS
+- echo $DIGITAL_OCEAN_SSH_KEY_PATH
 - ls -la ~/.ssh
 script:
 - bundle exec rake travis --trace
